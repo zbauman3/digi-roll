@@ -1,0 +1,90 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/Users/zanebauman/code/digi-roll/include",
+                "/Users/zanebauman/code/digi-roll/src",
+                "/Users/zanebauman/code/digi-roll/lib/SNX4HC595",
+                "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit LED Backpack Library",
+                "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit GFX Library",
+                "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit BusIO",
+                "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/SPI",
+                "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/Wire/src",
+                "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/cores/tiny",
+                "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/variants/tinyX4",
+                "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit GPS Library/src",
+                "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit ILI9341",
+                "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit SH110X",
+                "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit STMPE610",
+                "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit TSC2007",
+                "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit TouchScreen",
+                "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/RTClib/src",
+                "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/WaveHC",
+                "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/ATTinyCore/src",
+                "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/EEPROM",
+                "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/Servo/src",
+                "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/Servo_ATTinyCore/src",
+                "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/SoftwareSerial",
+                "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/tinyNeoPixel",
+                "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/tinyNeoPixel_Static",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/Users/zanebauman/code/digi-roll/include",
+                    "/Users/zanebauman/code/digi-roll/src",
+                    "/Users/zanebauman/code/digi-roll/lib/SNX4HC595",
+                    "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit LED Backpack Library",
+                    "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit GFX Library",
+                    "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit BusIO",
+                    "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/SPI",
+                    "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/Wire/src",
+                    "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/cores/tiny",
+                    "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/variants/tinyX4",
+                    "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit GPS Library/src",
+                    "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit ILI9341",
+                    "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit SH110X",
+                    "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit STMPE610",
+                    "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit TSC2007",
+                    "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit TouchScreen",
+                    "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/RTClib/src",
+                    "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/WaveHC",
+                    "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/ATTinyCore/src",
+                    "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/EEPROM",
+                    "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/Servo/src",
+                    "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/Servo_ATTinyCore/src",
+                    "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/SoftwareSerial",
+                    "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/tinyNeoPixel",
+                    "/Users/zanebauman/.platformio/packages/framework-arduino-avr-attiny/libraries/tinyNeoPixel_Static",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60115",
+                "ARDUINO_AVR_ATTINYX4",
+                "F_CPU=1000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "CLOCK_SOURCE=0",
+                "NEOPIXELPORT=PORTA",
+                "__AVR_ATtiny84__",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "/Users/zanebauman/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=attiny84",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
