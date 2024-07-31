@@ -1,5 +1,4 @@
-#include "Adafruit_LEDBackpack.h"
-#include <Adafruit_GFX.h>
+#include "views/MatrixDisplay.h"
 #include <Arduino.h>
 #include <SNX4HC595.c>
 #include <Wire.h>
@@ -8,12 +7,12 @@
 //
 //                           +-\/-+
 //                     VCC  1|    |14  GND
-//             (D  0)  PB0  2|    |13  PA0  (D 10)        AREF
-//             (D  1)  PB1  3|    |12  PA1  (D  9)
-//             (D 11)  PB3  4|    |11  PA2  (D  8)
-//  PWM  INT0  (D  2)  PB2  5|    |10  PA3  (D  7)
-//  PWM        (D  3)  PA7  6|    |9   PA4  (D  6)
-//  PWM        (D  4)  PA6  7|    |8   PA5  (D  5)        PWM
+//  btn        (D  0)  PB0  2|    |13  PA0  (D 10)        LED
+//  btn        (D  1)  PB1  3|    |12  PA1  (D  9)        LED
+//             (D 11)  PB3  4|    |11  PA2  (D  8)        btn
+//  btn        (D  2)  PB2  5|    |10  PA3  (D  7)        btn
+//  btn        (D  3)  PA7  6|    |9   PA4  (D  6)        i2c
+//  i2c        (D  4)  PA6  7|    |8   PA5  (D  5)        HAL
 //
 
 #define BTN_A0 0
@@ -23,7 +22,7 @@
 #define SHIFT_REG 8
 #define SHIFT_DAT 9
 
-Adafruit_7segment matrix = Adafruit_7segment();
+MatrixDisplay matrixDisplay;
 
 SNX4HC595Config config595 = {
     .sclk = SHIFT_CLK,
@@ -32,50 +31,46 @@ SNX4HC595Config config595 = {
 };
 
 void setup() {
-  matrix.begin(0x70);
   SNX4HC595_setup(&config595);
   pinMode(BTN_A0, INPUT_PULLUP);
   pinMode(BTN_A1, INPUT_PULLUP);
   pinMode(BTN_A2, INPUT_PULLUP);
-
-  matrix.print(0xBEBF, HEX);
-  matrix.writeDisplay();
-  matrix.setBrightness(7);
-  // matrix.writeDigitRaw()
+  matrixDisplay.begin();
+  matrixDisplay.rollDice();
 }
 
 void loop() {
-  bool btn0 = digitalRead(BTN_A0) == LOW;
-  bool btn1 = digitalRead(BTN_A1) == LOW;
-  bool btn2 = digitalRead(BTN_A2) == LOW;
+  matrixDisplay.runCoroutine();
+  // bool btn0 = digitalRead(BTN_A0) == LOW;
+  // bool btn1 = digitalRead(BTN_A1) == LOW;
+  // bool btn2 = digitalRead(BTN_A2) == LOW;
 
-  if (btn0 || btn1 || btn2) {
-    uint8_t data = 0;
+  // if (btn0 || btn1 || btn2) {
+  //   uint8_t data = 0;
 
-    if (btn2) {
-      if (btn1) {
-        if (btn0) {
-          data = 0b00000001;
-        } else {
-          data = 0b00000010;
-        }
-      } else if (btn0) {
-        data = 0b00000100;
-      } else {
-        data = 0b00001000;
-      }
-    } else if (btn1) {
-      if (btn0) {
-        data = 0b00010000;
-      } else {
-        data = 0b00100000;
-      }
-    } else {
-      data = 0b01000000;
-    }
-    SNX4HC595_sendByte(&config595, data);
-  }
-  delay(10);
+  //   if (btn2) {
+  //     if (btn1) {
+  //       if (btn0) {
+  //         data = 0b00000001;
+  //       } else {
+  //         data = 0b00000010;
+  //       }
+  //     } else if (btn0) {
+  //       data = 0b00000100;
+  //     } else {
+  //       data = 0b00001000;
+  //     }
+  //   } else if (btn1) {
+  //     if (btn0) {
+  //       data = 0b00010000;
+  //     } else {
+  //       data = 0b00100000;
+  //     }
+  //   } else {
+  //     data = 0b01000000;
+  //   }
+  //   SNX4HC595_sendByte(&config595, data);
+  // }
 
   // SNX4HC595_sendByte(&config595, 0b01000000);
   // delay(1000);
