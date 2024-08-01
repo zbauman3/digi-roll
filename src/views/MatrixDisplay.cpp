@@ -7,11 +7,14 @@ void MatrixDisplay::begin() {
   this->matrix.setBrightness(2);
 }
 
-void MatrixDisplay::rollDice() { this->action = MATRIX_ACTION_ROLL; }
+void MatrixDisplay::rollDice() { this->actionChange(MATRIX_ACTION_ROLL); }
 
 int MatrixDisplay::runCoroutine() {
   COROUTINE_LOOP() {
-    if (this->action == MATRIX_ACTION_ROLL) {
+    if (this->actionIs(MATRIX_ACTION_ROLL)) {
+      this->matrix.clear();
+      this->matrix.writeDisplay();
+
       for (this->j = 0; this->j < 5; this->j++) {
         if (this->j == 2) {
           this->j++;
@@ -31,7 +34,7 @@ int MatrixDisplay::runCoroutine() {
         this->matrix.writeDisplay();
       }
 
-      this->action = MATRIX_ACTION_IDLE;
+      this->actionSetIdle();
     }
   }
 }
