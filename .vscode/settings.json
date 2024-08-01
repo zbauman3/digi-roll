@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "*.ino": "cpp",
+    "snx4hc595.c": "cpp"
+  }
+}

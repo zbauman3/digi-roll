@@ -36,5 +36,7 @@ int MatrixDisplay::runCoroutine() {
 
       this->actionSetIdle();
     }
+
+    COROUTINE_YIELD();
   }
 }

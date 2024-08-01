@@ -1,6 +1,6 @@
+#include "views/LedStrip.h"
 #include "views/MatrixDisplay.h"
 #include <Arduino.h>
-#include <SNX4HC595.c>
 #include <Wire.h>
 
 // ATMEL ATTINY84 / ARDUINO
@@ -18,29 +18,25 @@
 #define BTN_A0 0
 #define BTN_A1 1
 #define BTN_A2 2
-#define SHIFT_CLK 10
-#define SHIFT_REG 8
-#define SHIFT_DAT 9
 
 MatrixDisplay matrixDisplay;
-
-SNX4HC595Config config595 = {
-    .sclk = SHIFT_CLK,
-    .rclk = SHIFT_REG,
-    .data = SHIFT_DAT,
-};
+LedStrip ledStrip;
 
 void setup() {
-  SNX4HC595_setup(&config595);
   pinMode(BTN_A0, INPUT_PULLUP);
   pinMode(BTN_A1, INPUT_PULLUP);
   pinMode(BTN_A2, INPUT_PULLUP);
+
   matrixDisplay.begin();
+  ledStrip.begin();
+
   matrixDisplay.rollDice();
+  ledStrip.wipe();
 }
 
 void loop() {
   matrixDisplay.runCoroutine();
+  ledStrip.runCoroutine();
   // bool btn0 = digitalRead(BTN_A0) == LOW;
   // bool btn1 = digitalRead(BTN_A1) == LOW;
   // bool btn2 = digitalRead(BTN_A2) == LOW;

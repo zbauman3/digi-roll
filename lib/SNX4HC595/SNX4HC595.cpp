@@ -1,13 +1,4 @@
-#ifndef _ZANE_SNX4HC595_
-#define _ZANE_SNX4HC595_
-
-#include <Arduino.h>
-
-typedef struct {
-  uint8_t sclk;
-  uint8_t rclk;
-  uint8_t data;
-} SNX4HC595Config;
+#include "./SNX4HC595.h"
 
 void SNX4HC595_sendData(SNX4HC595Config *config) {
   digitalWrite(config->sclk, HIGH);
@@ -48,5 +39,3 @@ void SNX4HC595_setup(SNX4HC595Config *config) {
 
   SNX4HC595_clear(config);
 }
-
-#endif
