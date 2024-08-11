@@ -13,11 +13,15 @@ void MatrixDisplay::begin() {
 void MatrixDisplay::rollDice() { this->actionChange(MATRIX_ACTION_ROLL); }
 
 void MatrixDisplay::loop() {
-  if (this->state->isUpdateLoop()) {
-    if (this->state->isModeIdle) {
-      this->actionSetIdle();
+  if (this->state->isUpdateLoop) {
+    if (this->state->isModeReset) {
+      this->actionSetIdle(true);
+      this->matrix.clear();
+      this->matrix.writeDisplay();
     } else if (this->state->isModeTest) {
       this->actionChange(MATRIX_ACTION_ROLL);
+    } else {
+      this->actionSetIdle();
     }
   }
 

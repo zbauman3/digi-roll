@@ -1,22 +1,28 @@
 #include "./State.h"
 
-bool State::isUpdateLoop() { return this->_isUpdateLoop; }
-
 void State::loop() {
-  if (this->pendingStateUpdate) {
-    this->_isUpdateLoop = true;
-    this->pendingStateUpdate = false;
+  if (this->_pendingStateUpdate) {
+    this->isUpdateLoop = true;
+    this->_pendingStateUpdate = false;
 
-    this->_mode = this->nextMode;
+    this->_mode = this->_nextMode;
 
     this->isModeIdle = this->_mode == STATE_MODE_IDLE;
+    this->isModeReset = this->_mode == STATE_MODE_RESET;
     this->isModeTest = this->_mode == STATE_MODE_TEST;
   } else {
-    this->_isUpdateLoop = false;
+    this->isUpdateLoop = false;
+    if (this->isModeReset) {
+      this->setModeIdle();
+    }
   }
 }
 
-void State::setModeTest() {
-  this->nextMode = STATE_MODE_TEST;
-  this->pendingStateUpdate = true;
+void State::setMode(uint8_t nextMode) {
+  this->_nextMode = nextMode;
+  this->_pendingStateUpdate = true;
 }
+
+void State::setModeIdle() { this->setMode(STATE_MODE_IDLE); }
+void State::setModeReset() { this->setMode(STATE_MODE_RESET); }
+void State::setModeTest() { this->setMode(STATE_MODE_TEST); }

@@ -28,8 +28,7 @@ void setup() {
   matrixDisplay.begin();
   ledStrip.begin();
 
-  matrixDisplay.rollDice();
-  ledStrip.wipe();
+  state.setModeReset();
 }
 
 void loop() {
