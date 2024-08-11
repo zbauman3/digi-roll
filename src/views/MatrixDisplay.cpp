@@ -1,6 +1,9 @@
 #include "./MatrixDisplay.h"
 
-MatrixDisplay::MatrixDisplay() { this->matrix = Adafruit_7segment(); };
+MatrixDisplay::MatrixDisplay(State *_state) {
+  this->state = _state;
+  this->matrix = Adafruit_7segment();
+};
 
 void MatrixDisplay::begin() {
   this->matrix.begin(0x70);
@@ -8,6 +11,18 @@ void MatrixDisplay::begin() {
 }
 
 void MatrixDisplay::rollDice() { this->actionChange(MATRIX_ACTION_ROLL); }
+
+void MatrixDisplay::loop() {
+  if (this->state->isUpdateLoop()) {
+    if (this->state->isModeIdle) {
+      this->actionSetIdle();
+    } else if (this->state->isModeTest) {
+      this->actionChange(MATRIX_ACTION_ROLL);
+    }
+  }
+
+  this->runCoroutine();
+}
 
 int MatrixDisplay::runCoroutine() {
   COROUTINE_LOOP() {

@@ -1,6 +1,7 @@
 #include "./LedStrip.h"
 
-LedStrip::LedStrip() {
+LedStrip::LedStrip(State *_state) {
+  this->state = _state;
   this->config = {
       .sclk = 10,
       .rclk = 8,
@@ -13,6 +14,18 @@ void LedStrip::begin() { SNX4HC595_setup(&this->config); }
 void LedStrip::wipe() { this->actionChange(LED_STRIP_ACTION_WIPE); }
 
 void LedStrip::clear() { SNX4HC595_sendByte(&this->config, 0b00000000); }
+
+void LedStrip::loop() {
+  if (this->state->isUpdateLoop()) {
+    if (this->state->isModeIdle) {
+      this->actionSetIdle();
+    } else if (this->state->isModeTest) {
+      this->actionChange(LED_STRIP_ACTION_WIPE);
+    }
+  }
+
+  this->runCoroutine();
+}
 
 int LedStrip::runCoroutine() {
   COROUTINE_LOOP() {

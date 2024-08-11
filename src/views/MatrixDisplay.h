@@ -2,6 +2,7 @@
 #define Z_MatrixDisplay
 
 #include "Adafruit_LEDBackpack.h"
+#include "models/State.h"
 #include "util/CoroutineAction.h"
 #include <Adafruit_GFX.h>
 
@@ -12,11 +13,13 @@ private:
   Adafruit_7segment matrix;
   uint8_t i;
   uint8_t j;
+  State *state;
 
 public:
-  MatrixDisplay();
+  MatrixDisplay(State *_state);
   void begin();
   void rollDice();
+  void loop() override;
   int runCoroutine() override;
 };
 

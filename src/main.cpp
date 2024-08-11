@@ -1,3 +1,4 @@
+#include "models/State.h"
 #include "views/LedStrip.h"
 #include "views/MatrixDisplay.h"
 #include <Arduino.h>
@@ -9,23 +10,20 @@
 //                     VCC  1|    |14  GND
 //  btn        (D  0)  PB0  2|    |13  PA0  (D 10)        LED
 //  btn        (D  1)  PB1  3|    |12  PA1  (D  9)        LED
-//             (D 11)  PB3  4|    |11  PA2  (D  8)        btn
-//  btn        (D  2)  PB2  5|    |10  PA3  (D  7)        btn
+//             (D 11)  PB3  4|    |11  PA2  (D  8)
+//  btn        (D  2)  PB2  5|    |10  PA3  (D  7)
 //  btn        (D  3)  PA7  6|    |9   PA4  (D  6)        i2c
 //  i2c        (D  4)  PA6  7|    |8   PA5  (D  5)        HAL
 //
 
-#define BTN_A0 0
-#define BTN_A1 1
-#define BTN_A2 2
+#define HAL_PIN 5
 
-MatrixDisplay matrixDisplay;
-LedStrip ledStrip;
+State state;
+MatrixDisplay matrixDisplay(&state);
+LedStrip ledStrip(&state);
 
 void setup() {
-  pinMode(BTN_A0, INPUT_PULLUP);
-  pinMode(BTN_A1, INPUT_PULLUP);
-  pinMode(BTN_A2, INPUT_PULLUP);
+  pinMode(HAL_PIN, INPUT_PULLUP);
 
   matrixDisplay.begin();
   ledStrip.begin();
@@ -35,8 +33,16 @@ void setup() {
 }
 
 void loop() {
-  matrixDisplay.runCoroutine();
-  ledStrip.runCoroutine();
+  state.loop();
+
+  uint8_t hallActive = !digitalRead(HAL_PIN);
+  if (hallActive) {
+    state.setModeTest();
+  }
+
+  matrixDisplay.loop();
+  ledStrip.loop();
+
   // bool btn0 = digitalRead(BTN_A0) == LOW;
   // bool btn1 = digitalRead(BTN_A1) == LOW;
   // bool btn2 = digitalRead(BTN_A2) == LOW;
