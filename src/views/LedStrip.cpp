@@ -13,6 +13,11 @@ void LedStrip::begin() { SNX4HC595_setup(&this->config); }
 
 void LedStrip::wipe() { this->actionChange(LED_STRIP_ACTION_WIPE); }
 
+void LedStrip::showByte(uint8_t _disp) {
+  this->disp = _disp;
+  this->actionChange(LED_STRIP_ACTION_BYTE);
+}
+
 void LedStrip::clear() { SNX4HC595_sendByte(&this->config, 0b00000000); }
 
 void LedStrip::loop() {
@@ -41,6 +46,9 @@ int LedStrip::runCoroutine() {
       }
 
       this->clear();
+      this->actionSetIdle();
+    } else if (this->actionIs(LED_STRIP_ACTION_BYTE)) {
+      SNX4HC595_sendByte(&this->config, this->disp);
       this->actionSetIdle();
     }
 

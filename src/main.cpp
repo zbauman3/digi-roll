@@ -17,6 +17,12 @@
 //
 
 #define HAL_PIN 5
+#define BTN_0 0
+#define BTN_1 1
+#define BTN_2 2
+#define BTN_INT 3
+uint8_t buttonState = 0;
+bool buttonInt = false;
 
 State state;
 MatrixDisplay matrixDisplay(&state);
@@ -24,10 +30,17 @@ LedStrip ledStrip(&state);
 
 void setup() {
   pinMode(HAL_PIN, INPUT_PULLUP);
+  pinMode(BTN_0, INPUT);
+  pinMode(BTN_1, INPUT);
+  pinMode(BTN_2, INPUT);
+  pinMode(BTN_INT, INPUT_PULLUP);
+
+  GIMSK |= (1 << PCIE0);
+  PCMSK0 |= (1 << PCINT7);
+  sei();
 
   matrixDisplay.begin();
   ledStrip.begin();
-
   state.setModeReset();
 }
 
@@ -39,95 +52,19 @@ void loop() {
     state.setModeTest();
   }
 
+  if (buttonInt) {
+    buttonInt = false;
+    ledStrip.showByte(buttonState);
+  }
+
   matrixDisplay.loop();
   ledStrip.loop();
+}
 
-  // bool btn0 = digitalRead(BTN_A0) == LOW;
-  // bool btn1 = digitalRead(BTN_A1) == LOW;
-  // bool btn2 = digitalRead(BTN_A2) == LOW;
-
-  // if (btn0 || btn1 || btn2) {
-  //   uint8_t data = 0;
-
-  //   if (btn2) {
-  //     if (btn1) {
-  //       if (btn0) {
-  //         data = 0b00000001;
-  //       } else {
-  //         data = 0b00000010;
-  //       }
-  //     } else if (btn0) {
-  //       data = 0b00000100;
-  //     } else {
-  //       data = 0b00001000;
-  //     }
-  //   } else if (btn1) {
-  //     if (btn0) {
-  //       data = 0b00010000;
-  //     } else {
-  //       data = 0b00100000;
-  //     }
-  //   } else {
-  //     data = 0b01000000;
-  //   }
-  //   SNX4HC595_sendByte(&config595, data);
-  // }
-
-  // SNX4HC595_sendByte(&config595, 0b01000000);
-  // delay(1000);
-  // SNX4HC595_sendByte(&config595, 0b00000000);
-  // delay(1000);
-  // SNX4HC595_sendByte(&config595, 0b00000001);
-  // delay(1000);
-  // SNX4HC595_sendByte(&config595, 0b00000000);
-  // delay(1000);
-
-  // // try to print a number thats too long
-  // matrix.print(10000, DEC);
-  // matrix.writeDisplay();
-  // delay(1000);
-
-  // // print a hex number
-  // matrix.print(0xBEEF, HEX);
-  // matrix.writeDisplay();
-  // delay(1000);
-
-  // // print a floating point
-  // matrix.print(12.34);
-  // matrix.writeDisplay();
-  // delay(1000);
-
-  // // print a string message
-  // matrix.print("7SEG");
-  // matrix.writeDisplay();
-  // delay(10000);
-
-  // // print with print/println
-  // for (uint16_t counter = 0; counter < 9999; counter++) {
-  //   matrix.println(counter);
-  //   matrix.writeDisplay();
-  //   delay(10);
-  // }
-
-  // // method #2 - draw each digit
-  // uint16_t blinkcounter = 0;
-  // boolean drawDots = false;
-  // for (uint16_t counter = 0; counter < 9999; counter++) {
-  //   matrix.writeDigitNum(0, (counter / 1000), drawDots);
-  //   matrix.writeDigitNum(1, (counter / 100) % 10, drawDots);
-  //   matrix.drawColon(drawDots);
-  //   matrix.writeDigitNum(3, (counter / 10) % 10, drawDots);
-  //   matrix.writeDigitNum(4, counter % 10, drawDots);
-
-  //   blinkcounter += 50;
-  //   if (blinkcounter < 500) {
-  //     drawDots = false;
-  //   } else if (blinkcounter < 1000) {
-  //     drawDots = true;
-  //   } else {
-  //     blinkcounter = 0;
-  //   }
-  //   matrix.writeDisplay();
-  //   delay(10);
-  // }
+ISR(PCINT0_vect) {
+  if (digitalRead(BTN_INT) == LOW) {
+    buttonState = (1 << ((digitalRead(BTN_0) * 1) + (digitalRead(BTN_1) * 2) +
+                         (digitalRead(BTN_2) * 4)));
+    buttonInt = true;
+  }
 }
