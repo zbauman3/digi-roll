@@ -1,3 +1,4 @@
+#include "controllers/Buttons.h"
 #include "models/State.h"
 #include "views/LedStrip.h"
 #include "views/MatrixDisplay.h"
@@ -17,54 +18,31 @@
 //
 
 #define HAL_PIN 5
-#define BTN_0 0
-#define BTN_1 1
-#define BTN_2 2
-#define BTN_INT 3
-uint8_t buttonState = 0;
-bool buttonInt = false;
 
 State state;
 MatrixDisplay matrixDisplay(&state);
 LedStrip ledStrip(&state);
+Buttons buttons(&state);
 
 void setup() {
   pinMode(HAL_PIN, INPUT_PULLUP);
-  pinMode(BTN_0, INPUT);
-  pinMode(BTN_1, INPUT);
-  pinMode(BTN_2, INPUT);
-  pinMode(BTN_INT, INPUT_PULLUP);
 
-  GIMSK |= (1 << PCIE0);
-  PCMSK0 |= (1 << PCINT7);
-  sei();
-
+  buttons.begin();
   matrixDisplay.begin();
   ledStrip.begin();
   state.setModeReset();
+
+  sei();
 }
 
 void loop() {
   state.loop();
 
-  uint8_t hallActive = !digitalRead(HAL_PIN);
-  if (hallActive) {
-    state.setModeTest();
-  }
-
-  if (buttonInt) {
-    buttonInt = false;
-    ledStrip.showByte(buttonState);
-  }
+  // uint8_t hallActive = !digitalRead(HAL_PIN);
+  // if (hallActive) {
+  //   state.setModeTest();
+  // }
 
   matrixDisplay.loop();
   ledStrip.loop();
-}
-
-ISR(PCINT0_vect) {
-  if (digitalRead(BTN_INT) == LOW) {
-    buttonState = (1 << ((digitalRead(BTN_0) * 1) + (digitalRead(BTN_1) * 2) +
-                         (digitalRead(BTN_2) * 4)));
-    buttonInt = true;
-  }
 }

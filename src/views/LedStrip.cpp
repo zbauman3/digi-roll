@@ -11,13 +11,6 @@ LedStrip::LedStrip(State *_state) {
 
 void LedStrip::begin() { SNX4HC595_setup(&this->config); }
 
-void LedStrip::wipe() { this->actionChange(LED_STRIP_ACTION_WIPE); }
-
-void LedStrip::showByte(uint8_t _disp) {
-  this->disp = _disp;
-  this->actionChange(LED_STRIP_ACTION_BYTE);
-}
-
 void LedStrip::clear() { SNX4HC595_sendByte(&this->config, 0b00000000); }
 
 void LedStrip::loop() {
@@ -27,6 +20,9 @@ void LedStrip::loop() {
       this->clear();
     } else if (this->state->isModeTest) {
       this->actionChange(LED_STRIP_ACTION_WIPE);
+    } else if (this->state->isModeSelectDice) {
+      this->disp = (1 << this->state->button);
+      this->actionChange(LED_STRIP_ACTION_BYTE, true);
     } else {
       this->actionSetIdle();
     }

@@ -22,10 +22,6 @@ public:
   void clear();
   void loop() override;
   int runCoroutine() override;
-
-  // -------- helpers
-  void wipe();
-  void showByte(uint8_t _disp);
 };
 
 #endif // Z_LED_STRIP
