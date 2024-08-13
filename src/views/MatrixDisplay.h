@@ -7,6 +7,7 @@
 #include <Adafruit_GFX.h>
 
 #define MATRIX_ACTION_ROLL 1
+#define MATRIX_ACTION_SELECT_DICE 2
 
 class MatrixDisplay : public CoroutineAction {
 private:
@@ -18,7 +19,6 @@ private:
 public:
   MatrixDisplay(State *_state);
   void begin();
-  void rollDice();
   void loop() override;
   int runCoroutine() override;
 };

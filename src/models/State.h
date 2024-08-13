@@ -9,18 +9,31 @@
 #define STATE_MODE_SELECT_DICE 3
 #define STATE_BUTTON_NONE 255
 
+typedef struct {
+  uint8_t button;
+  uint8_t mode;
+  uint8_t diceCount;
+} StateData;
+
 class State {
 private:
   volatile bool _pendingStateUpdate = false;
-  volatile uint8_t _nextMode = STATE_MODE_IDLE;
-  volatile uint8_t _nextButton = STATE_BUTTON_NONE;
-
+  volatile StateData _nextStateData = {
+      .button = STATE_BUTTON_NONE,
+      .mode = STATE_MODE_IDLE,
+      .diceCount = 0,
+  };
   void setMode(uint8_t nextMode);
+  void updateState();
+  void resetState();
 
 public:
-  uint8_t mode = STATE_MODE_IDLE;
-  uint8_t button = STATE_BUTTON_NONE;
   bool isUpdateLoop = false;
+  StateData stateData = {
+      .button = STATE_BUTTON_NONE,
+      .mode = STATE_MODE_IDLE,
+      .diceCount = 0,
+  };
   bool isModeIdle = true;
   bool isModeReset = false;
   bool isModeTest = false;

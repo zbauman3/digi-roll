@@ -10,8 +10,6 @@ void MatrixDisplay::begin() {
   this->matrix.setBrightness(2);
 }
 
-void MatrixDisplay::rollDice() { this->actionChange(MATRIX_ACTION_ROLL); }
-
 void MatrixDisplay::loop() {
   if (this->state->isUpdateLoop) {
     if (this->state->isModeReset) {
@@ -20,6 +18,8 @@ void MatrixDisplay::loop() {
       this->matrix.writeDisplay();
     } else if (this->state->isModeTest) {
       this->actionChange(MATRIX_ACTION_ROLL);
+    } else if (this->state->isModeSelectDice) {
+      this->actionChange(MATRIX_ACTION_SELECT_DICE);
     } else {
       this->actionSetIdle();
     }
@@ -32,7 +32,6 @@ int MatrixDisplay::runCoroutine() {
   COROUTINE_LOOP() {
     if (this->actionIs(MATRIX_ACTION_ROLL)) {
       this->matrix.clear();
-      this->matrix.writeDisplay();
 
       for (this->j = 0; this->j < 5; this->j++) {
         if (this->j == 2) {
@@ -54,6 +53,37 @@ int MatrixDisplay::runCoroutine() {
       }
 
       this->actionSetIdle();
+    } else if (this->actionIs(MATRIX_ACTION_SELECT_DICE)) {
+      this->matrix.clear();
+      this->matrix.writeDigitNum(0, this->state->stateData.diceCount);
+
+      switch (this->state->stateData.button) {
+      case 0:
+        this->matrix.writeDigitNum(4, 4);
+        break;
+      case 1:
+        this->matrix.writeDigitNum(4, 6);
+        break;
+      case 2:
+        this->matrix.writeDigitNum(4, 8);
+        break;
+      case 3:
+        this->matrix.writeDigitNum(3, 1);
+        this->matrix.writeDigitNum(4, 0);
+        break;
+      case 4:
+        this->matrix.writeDigitNum(3, 1);
+        this->matrix.writeDigitNum(4, 2);
+        break;
+      case 5:
+        this->matrix.writeDigitNum(3, 2);
+        this->matrix.writeDigitNum(4, 0);
+        break;
+      case 6:
+        this->matrix.writeDigitAscii(4, 'P');
+        break;
+      }
+      this->matrix.writeDisplay();
     }
 
     COROUTINE_YIELD();

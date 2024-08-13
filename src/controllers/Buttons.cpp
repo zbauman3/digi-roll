@@ -19,14 +19,16 @@ void Buttons::begin() {
 
 void Buttons::handleInterrupt() {
   if (digitalRead(BUTTONS_INT_PIN) == LOW) {
-    uint8_t button = (digitalRead(BUTTONS_0_PIN) * 1) +
-                     (digitalRead(BUTTONS_1_PIN) * 2) +
-                     (digitalRead(BUTTONS_2_PIN) * 4);
-
-    if (button == 7) {
+    this->lastPressed = (digitalRead(BUTTONS_0_PIN) * 1) +
+                        (digitalRead(BUTTONS_1_PIN) * 2) +
+                        (digitalRead(BUTTONS_2_PIN) * 4);
+  } else {
+    if (this->lastPressed == 7) {
       this->state->setModeReset();
-    } else {
-      this->state->setModeSelectDice(button);
+    } else if (this->lastPressed != STATE_BUTTON_NONE) {
+      this->state->setModeSelectDice(this->lastPressed);
     }
+
+    this->lastPressed = STATE_BUTTON_NONE;
   }
 }
