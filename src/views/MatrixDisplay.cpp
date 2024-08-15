@@ -56,6 +56,7 @@ int MatrixDisplay::runCoroutine() {
     } else if (this->actionIs(MATRIX_ACTION_SELECT_DICE)) {
       this->matrix.clear();
       this->matrix.writeDigitNum(0, this->state->stateData.diceCount);
+      this->matrix.writeDigitAscii(1, 'd');
 
       switch (this->state->stateData.button) {
       case 0:

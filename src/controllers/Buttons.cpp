@@ -19,10 +19,17 @@ void Buttons::begin() {
 
 void Buttons::handleInterrupt() {
   if (digitalRead(BUTTONS_INT_PIN) == LOW) {
+    this->lastPressedAt = millis();
     this->lastPressed = (digitalRead(BUTTONS_0_PIN) * 1) +
                         (digitalRead(BUTTONS_1_PIN) * 2) +
                         (digitalRead(BUTTONS_2_PIN) * 4);
   } else {
+    // software debounce
+    if (millis() - this->lastPressedAt < 50) {
+      this->lastPressed = STATE_BUTTON_NONE;
+      return;
+    }
+
     if (this->lastPressed == 7) {
       this->state->setModeReset();
     } else if (this->lastPressed != STATE_BUTTON_NONE) {

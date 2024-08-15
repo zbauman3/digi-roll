@@ -16,6 +16,7 @@ class Buttons {
 private:
   State *state;
   volatile uint8_t lastPressed = STATE_BUTTON_NONE;
+  volatile unsigned long lastPressedAt = 0;
 
 public:
   Buttons(State *_state);
