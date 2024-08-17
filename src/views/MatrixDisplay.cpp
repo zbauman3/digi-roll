@@ -69,6 +69,8 @@ int MatrixDisplay::runCoroutine() {
     } else if (this->actionIs(MATRIX_ACTION_SELECT_DICE) &&
                this->state->data.dice != STATE_DICE_NONE) {
       this->matrix.clear();
+      this->matrix.drawColon(true);
+
       this->matrix.writeDigitNum(0, this->state->data.diceCount);
       this->matrix.writeDigitAscii(1, 'd');
 
