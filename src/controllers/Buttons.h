@@ -15,12 +15,13 @@
 class Buttons {
 private:
   State *state;
-  volatile uint8_t lastPressed = STATE_BUTTON_NONE;
-  volatile unsigned long lastPressedAt = 0;
+  volatile bool didInterrupt = false;
+  uint8_t lastPressed = STATE_DICE_NONE;
 
 public:
   Buttons(State *_state);
   void begin();
+  void loop();
   void handleInterrupt();
 };
 

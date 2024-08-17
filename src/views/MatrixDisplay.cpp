@@ -53,12 +53,13 @@ int MatrixDisplay::runCoroutine() {
       }
 
       this->actionSetIdle();
-    } else if (this->actionIs(MATRIX_ACTION_SELECT_DICE)) {
+    } else if (this->actionIs(MATRIX_ACTION_SELECT_DICE) &&
+               this->state->stateData.dice != STATE_DICE_NONE) {
       this->matrix.clear();
       this->matrix.writeDigitNum(0, this->state->stateData.diceCount);
       this->matrix.writeDigitAscii(1, 'd');
 
-      switch (this->state->stateData.button) {
+      switch (this->state->stateData.dice) {
       case 0:
         this->matrix.writeDigitNum(4, 4);
         break;

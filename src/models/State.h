@@ -7,19 +7,19 @@
 #define STATE_MODE_RESET 1
 #define STATE_MODE_TEST 2
 #define STATE_MODE_SELECT_DICE 3
-#define STATE_BUTTON_NONE 255
+#define STATE_DICE_NONE 255
 
 typedef struct {
-  uint8_t button;
+  uint8_t dice;
   uint8_t mode;
   uint8_t diceCount;
 } StateData;
 
 class State {
 private:
-  volatile bool _pendingStateUpdate = false;
-  volatile StateData _nextStateData = {
-      .button = STATE_BUTTON_NONE,
+  bool _pendingStateUpdate = false;
+  StateData _nextStateData = {
+      .dice = STATE_DICE_NONE,
       .mode = STATE_MODE_IDLE,
       .diceCount = 0,
   };
@@ -30,7 +30,7 @@ private:
 public:
   bool isUpdateLoop = false;
   StateData stateData = {
-      .button = STATE_BUTTON_NONE,
+      .dice = STATE_DICE_NONE,
       .mode = STATE_MODE_IDLE,
       .diceCount = 0,
   };
@@ -45,7 +45,10 @@ public:
   void setModeIdle();
   void setModeReset();
   void setModeTest();
-  void setModeSelectDice(uint8_t nextButton);
+  void setModeSelectDice(uint8_t nextDice);
+
+  // -- utils
+  uint8_t getDiceCount();
 };
 
 #endif // Z_STATE_H

@@ -17,25 +17,26 @@ void Buttons::begin() {
   PCMSK0 |= (1 << BUTTONS_PCMSK0);
 }
 
-void Buttons::handleInterrupt() {
+void Buttons::loop() {
+  if (!this->didInterrupt) {
+    return;
+  }
+  this->didInterrupt = false;
+
   if (digitalRead(BUTTONS_INT_PIN) == LOW) {
-    this->lastPressedAt = millis();
     this->lastPressed = (digitalRead(BUTTONS_0_PIN) * 1) +
                         (digitalRead(BUTTONS_1_PIN) * 2) +
                         (digitalRead(BUTTONS_2_PIN) * 4);
   } else {
-    // software debounce
-    if (millis() - this->lastPressedAt < 50) {
-      this->lastPressed = STATE_BUTTON_NONE;
-      return;
-    }
 
     if (this->lastPressed == 7) {
       this->state->setModeReset();
-    } else if (this->lastPressed != STATE_BUTTON_NONE) {
+    } else if (this->lastPressed != STATE_DICE_NONE) {
       this->state->setModeSelectDice(this->lastPressed);
     }
 
-    this->lastPressed = STATE_BUTTON_NONE;
+    this->lastPressed = STATE_DICE_NONE;
   }
-}
+};
+
+void Buttons::handleInterrupt() { this->didInterrupt = true; }

@@ -36,6 +36,7 @@ void setup() {
 }
 
 void loop() {
+  buttons.loop();
   state.loop();
 
   // uint8_t hallActive = !digitalRead(HAL_PIN);
