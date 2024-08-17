@@ -21,7 +21,7 @@ void LedStrip::loop() {
     } else if (this->state->isModeTest) {
       this->actionChange(LED_STRIP_ACTION_WIPE);
     } else if (this->state->isModeSelectDice) {
-      this->disp = (1 << this->state->stateData.dice);
+      this->disp = (1 << this->state->data.dice);
       this->actionChange(LED_STRIP_ACTION_BYTE, true);
     } else {
       this->actionSetIdle();

@@ -10,26 +10,26 @@
 #define STATE_DICE_NONE 255
 
 typedef struct {
-  uint8_t dice;
   uint8_t mode;
+  uint8_t dice;
   uint8_t diceCount;
 } StateData;
 
 class State {
 private:
   bool _pendingStateUpdate = false;
-  StateData _nextStateData = {
+  StateData _nextData = {
       .dice = STATE_DICE_NONE,
       .mode = STATE_MODE_IDLE,
       .diceCount = 0,
   };
   void setMode(uint8_t nextMode);
-  void updateState();
-  void resetState();
+  void update();
+  void reset();
 
 public:
   bool isUpdateLoop = false;
-  StateData stateData = {
+  StateData data = {
       .dice = STATE_DICE_NONE,
       .mode = STATE_MODE_IDLE,
       .diceCount = 0,
