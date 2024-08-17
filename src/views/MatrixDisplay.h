@@ -15,6 +15,8 @@ private:
   uint8_t i;
   uint8_t j;
   State *state;
+  uint8_t _lastBrightness;
+  bool updateBrightness;
 
 public:
   MatrixDisplay(State *_state);

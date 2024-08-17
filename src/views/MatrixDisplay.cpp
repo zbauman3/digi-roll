@@ -7,7 +7,8 @@ MatrixDisplay::MatrixDisplay(State *_state) {
 
 void MatrixDisplay::begin() {
   this->matrix.begin(0x70);
-  this->matrix.setBrightness(2);
+  this->matrix.setBrightness(this->state->data.brightness);
+  this->_lastBrightness = this->state->data.brightness;
 }
 
 void MatrixDisplay::loop() {
@@ -23,6 +24,13 @@ void MatrixDisplay::loop() {
     } else {
       this->actionSetIdle();
     }
+
+    if (this->_lastBrightness != this->state->data.brightness) {
+      this->_lastBrightness = this->state->data.brightness;
+      this->updateBrightness = true;
+    } else {
+      this->updateBrightness = false;
+    }
   }
 
   this->runCoroutine();
@@ -30,6 +38,11 @@ void MatrixDisplay::loop() {
 
 int MatrixDisplay::runCoroutine() {
   COROUTINE_LOOP() {
+    if (this->updateBrightness) {
+      this->matrix.setBrightness(this->state->data.brightness);
+      COROUTINE_YIELD();
+    }
+
     if (this->actionIs(MATRIX_ACTION_ROLL)) {
       this->matrix.clear();
 
