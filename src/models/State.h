@@ -55,7 +55,6 @@ public:
   void loop();
 
   // ---- setters
-  void setModeIdle();
   void setModeReset();
   void setModeResults();
 

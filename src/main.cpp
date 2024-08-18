@@ -41,6 +41,5 @@ void loop() {
   state.loop();
 
   matrixDisplay.runCoroutine();
-
   ledStrip.runCoroutine();
 }

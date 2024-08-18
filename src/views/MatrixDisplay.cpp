@@ -20,27 +20,37 @@ int MatrixDisplay::runCoroutine() {
         COROUTINE_YIELD();
       }
 
+      this->matrix.clear();
+
       if (this->state->isModeSelectDice) {
-        this->matrix.clear();
-
-        uint8_t diceCount = this->state->getDiceCount();
-        if (diceCount < 10) {
-          this->matrix.writeDigitNum(4, diceCount);
-        } else if (diceCount < 100) {
-          this->matrix.print("  ");
-          this->matrix.printNumber(diceCount, 10);
-        } else {
-          this->matrix.writeDigitAscii(4, 'P');
-        }
-
         this->matrix.drawColon(true);
         this->matrix.writeDigitNum(0, this->state->data.diceCount);
         this->matrix.writeDigitAscii(1, 'd');
 
+        uint8_t diceCount = this->state->getDiceCount();
+        switch (diceCount) {
+        case 4:
+        case 6:
+        case 8:
+          this->matrix.writeDigitNum(4, diceCount);
+          break;
+        case 10:
+        case 12:
+          this->matrix.writeDigitNum(3, 1);
+          this->matrix.writeDigitNum(4, diceCount % 10);
+          break;
+        case 100:
+          this->matrix.writeDigitAscii(4, 'P');
+          break;
+        case 20:
+        default:
+          this->matrix.writeDigitNum(3, 2);
+          this->matrix.writeDigitNum(4, 0);
+          break;
+        }
+
         this->matrix.writeDisplay();
       } else if (this->state->isModeRolling) {
-        this->matrix.clear();
-
         for (this->j = 0; this->j < 5; this->j++) {
           if (this->j == 2) {
             this->j++;
@@ -62,27 +72,26 @@ int MatrixDisplay::runCoroutine() {
 
         this->state->setModeResults();
       } else if (this->state->isModeResults) {
-        this->matrix.clear();
-
-        uint8_t thisResult =
-            this->state->data.results[this->state->data.resultIndex];
-        if (thisResult < 10) {
-          this->matrix.writeDigitNum(4, thisResult);
-        } else if (thisResult < 100) {
-          this->matrix.print("  ");
-          this->matrix.printNumber(thisResult, 10);
-        } else {
-          this->matrix.print(" ");
-          this->matrix.printNumber(thisResult, 10);
-        }
-
         this->matrix.drawColon(true);
         this->matrix.writeDigitNum(0, this->state->data.resultIndex + 1);
         this->matrix.writeDigitAscii(1, 'd');
 
+        uint8_t currentResult =
+            this->state->data.results[this->state->data.resultIndex];
+        if (currentResult < 10) {
+          this->matrix.writeDigitNum(4, currentResult);
+        } else if (currentResult < 100) {
+          uint8_t lsd = currentResult % 10;
+          this->matrix.writeDigitNum(
+              3, (uint8_t)((uint8_t)(currentResult - lsd) / (uint8_t)10));
+          this->matrix.writeDigitNum(4, lsd);
+        } else {
+          this->matrix.writeDigitNum(3, 0);
+          this->matrix.writeDigitNum(4, 0);
+        }
+
         this->matrix.writeDisplay();
       } else if (this->state->isModeReset) {
-        this->matrix.clear();
         this->matrix.writeDisplay();
       }
     }

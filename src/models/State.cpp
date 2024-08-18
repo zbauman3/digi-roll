@@ -67,13 +67,9 @@ void State::loop() {
 
   // after a reset loop, transition back to idle
   if (this->isModeReset) {
-    this->setModeIdle();
+    this->_nextData.mode = STATE_MODE_IDLE;
+    this->_pendingStateUpdate = true;
   }
-}
-
-void State::setModeIdle() {
-  this->_nextData.mode = STATE_MODE_IDLE;
-  this->_pendingStateUpdate = true;
 }
 
 void State::setModeReset() {

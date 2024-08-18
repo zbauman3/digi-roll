@@ -11,7 +11,6 @@ using namespace ace_routine;
 class LedStrip : public Coroutine {
 private:
   SNX4HC595Config config;
-  uint8_t i;
   State *state;
 
 public:
