@@ -74,9 +74,7 @@ int MatrixDisplay::runCoroutine() {
         this->matrix.writeDigitNum(0, this->state->data.resultIndex + 1, true);
 
         uint8_t currentResult =
-            this->state->data.resultIndex > 0
-                ? 100
-                : this->state->data.results[this->state->data.resultIndex];
+            this->state->data.results[this->state->data.resultIndex];
         if (currentResult < 10) {
           this->matrix.writeDigitNum(4, currentResult);
         } else if (currentResult < 100) {
