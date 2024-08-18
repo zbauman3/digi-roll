@@ -23,7 +23,6 @@ int MatrixDisplay::runCoroutine() {
       this->matrix.clear();
 
       if (this->state->isModeSelectDice) {
-        this->matrix.drawColon(true);
         this->matrix.writeDigitNum(0, this->state->data.diceCount);
         this->matrix.writeDigitAscii(1, 'd');
 
@@ -72,12 +71,12 @@ int MatrixDisplay::runCoroutine() {
 
         this->state->setModeResults();
       } else if (this->state->isModeResults) {
-        this->matrix.drawColon(true);
-        this->matrix.writeDigitNum(0, this->state->data.resultIndex + 1);
-        this->matrix.writeDigitAscii(1, 'd');
+        this->matrix.writeDigitNum(0, this->state->data.resultIndex + 1, true);
 
         uint8_t currentResult =
-            this->state->data.results[this->state->data.resultIndex];
+            this->state->data.resultIndex > 0
+                ? 100
+                : this->state->data.results[this->state->data.resultIndex];
         if (currentResult < 10) {
           this->matrix.writeDigitNum(4, currentResult);
         } else if (currentResult < 100) {
@@ -86,6 +85,7 @@ int MatrixDisplay::runCoroutine() {
               3, (uint8_t)((uint8_t)(currentResult - lsd) / (uint8_t)10));
           this->matrix.writeDigitNum(4, lsd);
         } else {
+          this->matrix.writeDigitNum(1, 1);
           this->matrix.writeDigitNum(3, 0);
           this->matrix.writeDigitNum(4, 0);
         }

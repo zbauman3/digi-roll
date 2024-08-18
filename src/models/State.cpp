@@ -140,14 +140,16 @@ void State::triggerRoll() {
   }
 
   this->_lastInteractionAt = now;
-  randomSeed(now - this->_lastRolledAt);
+  unsigned long seedBase = now - this->_lastRolledAt;
+  this->_lastRolledAt = 0;
 
   uint8_t diceCountMax = this->getDiceCount() + 1;
   for (uint8_t i = 0; i < this->data.diceCount; i++) {
+    randomSeed(seedBase + i);
     this->_nextData.results[i] = random(1, diceCountMax);
+    delay(((uint8_t)(seedBase % this->data.diceCount)) + 1 + i);
   }
 
-  this->_lastRolledAt = 0;
   this->_nextData.mode = STATE_MODE_ROLLING;
   this->_pendingStateUpdate = true;
 }
