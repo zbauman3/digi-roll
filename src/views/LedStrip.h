@@ -3,6 +3,7 @@
 
 #include "SNX4HC595.h"
 #include "models/State.h"
+#include "utils/Pins.h"
 #include <AceRoutine.h>
 #include <Arduino.h>
 

@@ -2,6 +2,7 @@
 #define Z_BUTTONS_H
 
 #include "models/State.h"
+#include "utils/Pins.h"
 #include <Arduino.h>
 
 class Buttons {

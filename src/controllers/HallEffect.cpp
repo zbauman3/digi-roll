@@ -10,10 +10,8 @@ HallEffect::HallEffect(State *_state) {
 }
 
 void HallEffect::begin() {
-  pinMode(0, INPUT_PULLUP);
-
-  GIMSK |= (1 << PCIE1);
-  PCMSK1 |= (1 << PCINT8);
+  pinMode(PIN_HALL_INT, INPUT_PULLUP);
+  PIN_HALL_INT_SETUP();
 }
 
 void HallEffect::loop() {

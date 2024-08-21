@@ -2,6 +2,7 @@
 #define Z_HALL_EFFECT
 
 #include "models/State.h"
+#include "utils/Pins.h"
 #include <Arduino.h>
 
 class HallEffect {

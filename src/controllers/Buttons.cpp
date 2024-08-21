@@ -9,13 +9,11 @@ Buttons::Buttons(State *_state) {
 }
 
 void Buttons::begin() {
-  pinMode(5, INPUT);
-  pinMode(1, INPUT);
-  pinMode(2, INPUT);
-  pinMode(3, INPUT_PULLUP);
-
-  GIMSK |= (1 << PCIE0);
-  PCMSK0 |= (1 << PCINT7);
+  pinMode(PIN_BTN_0, INPUT);
+  pinMode(PIN_BTN_1, INPUT);
+  pinMode(PIN_BTN_2, INPUT);
+  pinMode(PIN_BTN_INT, INPUT_PULLUP);
+  PIN_BTN_INT_SETUP();
 }
 
 void Buttons::loop() {
@@ -37,8 +35,8 @@ void Buttons::loop() {
 void Buttons::handleInterrupt() {
   if (!(PINA & _BV(PINA7))) {
     this->didInterrupt = true;
-    this->lastPressed[0] = (PINA & _BV(PINA5)) ? 1 : 0;
-    this->lastPressed[1] = (PINB & _BV(PINB1)) ? 1 : 0;
-    this->lastPressed[2] = (PINB & _BV(PINB2)) ? 1 : 0;
+    this->lastPressed[0] = PIN_BTN_0_READ();
+    this->lastPressed[1] = PIN_BTN_1_READ();
+    this->lastPressed[2] = PIN_BTN_2_READ();
   }
 }

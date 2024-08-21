@@ -3,9 +3,9 @@
 LedStrip::LedStrip(State *_state) {
   this->state = _state;
   this->config = {
-      .sclk = 10,
-      .rclk = 8,
-      .data = 9,
+      .sclk = PIN_LED_SCLK,
+      .rclk = PIN_LED_RCLK,
+      .data = PIN_LED_DATA,
   };
 }
 
