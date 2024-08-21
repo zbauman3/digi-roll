@@ -10,6 +10,7 @@ private:
   State *state;
   volatile bool didInterrupt = false;
   bool lastState = false;
+  bool isEnabled = false;
 
 public:
   HallEffect(State *_state);

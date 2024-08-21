@@ -17,6 +17,7 @@
 #define PIN_HALL_INT_SETUP()                                                   \
   GIMSK |= (1 << PCIE1);                                                       \
   PCMSK1 |= (1 << PCINT8)
+#define PIN_HALL_ENABLE 7
 
 #define PIN_BTN_0 5
 #define PIN_BTN_1 1
