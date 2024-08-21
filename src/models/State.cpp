@@ -3,7 +3,8 @@
 void State::loop() {
   unsigned long idleTime = millis() - this->_lastInteractionAt;
   if (idleTime > STATE_BRIGHTNESS_DELAY) {
-    if (!this->isModeResults && idleTime > STATE_IDLE_TIMEOUT) {
+    if (!this->isModeResults && !this->isModeReset && !this->isModeIdle &&
+        idleTime > STATE_IDLE_TIMEOUT) {
       this->setModeReset();
     } else {
       this->setBrightness(STATE_BRIGHTNESS_1);
@@ -43,15 +44,15 @@ void State::loop() {
       this->data.diceCount = 0;
       this->data.brightness = STATE_BRIGHTNESS_2;
 
-      this->data.results[0] = this->_nextData.results[0] = 0;
-      this->data.results[1] = this->_nextData.results[1] = 0;
-      this->data.results[2] = this->_nextData.results[2] = 0;
-      this->data.results[3] = this->_nextData.results[3] = 0;
-      this->data.results[4] = this->_nextData.results[4] = 0;
-      this->data.results[5] = this->_nextData.results[5] = 0;
-      this->data.results[6] = this->_nextData.results[6] = 0;
-      this->data.results[7] = this->_nextData.results[7] = 0;
-      this->data.results[8] = this->_nextData.results[8] = 0;
+      this->data.results[0] = this->_nextData.results[0] = 1;
+      this->data.results[1] = this->_nextData.results[1] = 1;
+      this->data.results[2] = this->_nextData.results[2] = 1;
+      this->data.results[3] = this->_nextData.results[3] = 1;
+      this->data.results[4] = this->_nextData.results[4] = 1;
+      this->data.results[5] = this->_nextData.results[5] = 1;
+      this->data.results[6] = this->_nextData.results[6] = 1;
+      this->data.results[7] = this->_nextData.results[7] = 1;
+      this->data.results[8] = this->_nextData.results[8] = 1;
       this->data.resultIndex = 0;
 
       this->_nextData.dice = 0;
@@ -73,7 +74,6 @@ void State::loop() {
 }
 
 void State::setModeReset() {
-  this->_lastInteractionAt = millis();
   this->_nextData.mode = STATE_MODE_RESET;
   this->_pendingStateUpdate = true;
 }

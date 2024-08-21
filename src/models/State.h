@@ -28,7 +28,7 @@ private:
   unsigned long _lastInteractionAt = 0;
   unsigned long _lastRolledAt = 0;
   StateData _nextData = {
-      .mode = STATE_MODE_IDLE,
+      .mode = STATE_MODE_RESET,
       .dice = 0,
       .diceCount = 0,
       .brightness = STATE_BRIGHTNESS_2,
@@ -37,17 +37,17 @@ private:
   };
 
 public:
-  bool isUpdateLoop = false;
+  bool isUpdateLoop = true;
   StateData data = {
-      .mode = STATE_MODE_IDLE,
+      .mode = STATE_MODE_RESET,
       .dice = 0,
       .diceCount = 0,
       .brightness = STATE_BRIGHTNESS_2,
       .results = {1, 1, 1, 1, 1, 1, 1, 1, 1},
       .resultIndex = 0,
   };
-  bool isModeIdle = true;
-  bool isModeReset = false;
+  bool isModeIdle = false;
+  bool isModeReset = true;
   bool isModeSelectDice = false;
   bool isModeRolling = false;
   bool isModeResults = false;

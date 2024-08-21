@@ -16,6 +16,7 @@ private:
 public:
   LedStrip(State *_state);
   void begin();
+  void loop();
   int runCoroutine() override;
 };
 
