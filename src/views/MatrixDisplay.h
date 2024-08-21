@@ -18,6 +18,7 @@ private:
 
 public:
   MatrixDisplay(State *_state);
+  void loop();
   void begin();
   int runCoroutine() override;
 };

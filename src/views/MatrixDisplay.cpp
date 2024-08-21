@@ -11,6 +11,8 @@ void MatrixDisplay::begin() {
   this->_lastBrightness = this->state->data.brightness;
 }
 
+void MatrixDisplay::loop() { this->runCoroutine(); }
+
 int MatrixDisplay::runCoroutine() {
   COROUTINE_LOOP() {
     if (this->state->isUpdateLoop) {
@@ -22,7 +24,7 @@ int MatrixDisplay::runCoroutine() {
 
       this->matrix.clear();
 
-      if (this->state->isModeSelectDice) {
+      if (this->state->data.mode == STATE_MODE_SELECT_DICE) {
         this->matrix.writeDigitNum(0, this->state->data.diceCount);
         this->matrix.writeDigitAscii(1, 'd');
 
@@ -49,7 +51,7 @@ int MatrixDisplay::runCoroutine() {
         }
 
         this->matrix.writeDisplay();
-      } else if (this->state->isModeRolling) {
+      } else if (this->state->data.mode == STATE_MODE_ROLLING) {
         for (this->j = 0; this->j < 5; this->j++) {
           if (this->j == 2) {
             this->j++;
@@ -70,7 +72,7 @@ int MatrixDisplay::runCoroutine() {
         }
 
         this->state->setModeResults();
-      } else if (this->state->isModeResults) {
+      } else if (this->state->data.mode == STATE_MODE_RESULTS) {
         this->matrix.writeDigitNum(0, this->state->data.resultIndex + 1, true);
 
         uint8_t currentResult =
@@ -89,7 +91,7 @@ int MatrixDisplay::runCoroutine() {
         }
 
         this->matrix.writeDisplay();
-      } else if (this->state->isModeReset) {
+      } else if (this->state->data.mode == STATE_MODE_RESET) {
         this->matrix.writeDisplay();
       }
     }

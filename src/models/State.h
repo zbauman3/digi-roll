@@ -46,11 +46,6 @@ public:
       .results = {1, 1, 1, 1, 1, 1, 1, 1, 1},
       .resultIndex = 0,
   };
-  bool isModeIdle = false;
-  bool isModeReset = true;
-  bool isModeSelectDice = false;
-  bool isModeRolling = false;
-  bool isModeResults = false;
 
   void loop();
 

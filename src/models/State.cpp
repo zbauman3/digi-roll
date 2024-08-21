@@ -3,8 +3,9 @@
 void State::loop() {
   unsigned long idleTime = millis() - this->_lastInteractionAt;
   if (idleTime > STATE_BRIGHTNESS_DELAY) {
-    if (!this->isModeResults && !this->isModeReset && !this->isModeIdle &&
-        idleTime > STATE_IDLE_TIMEOUT) {
+    if (this->data.mode != STATE_MODE_RESULTS &&
+        this->data.mode != STATE_MODE_RESET &&
+        this->data.mode != STATE_MODE_IDLE && idleTime > STATE_IDLE_TIMEOUT) {
       this->setModeReset();
     } else {
       this->setBrightness(STATE_BRIGHTNESS_1);
@@ -33,13 +34,7 @@ void State::loop() {
     this->data.results[8] = this->_nextData.results[8];
     this->data.resultIndex = this->_nextData.resultIndex;
 
-    this->isModeIdle = this->data.mode == STATE_MODE_IDLE;
-    this->isModeReset = this->data.mode == STATE_MODE_RESET;
-    this->isModeSelectDice = this->data.mode == STATE_MODE_SELECT_DICE;
-    this->isModeResults = this->data.mode == STATE_MODE_RESULTS;
-    this->isModeRolling = this->data.mode == STATE_MODE_ROLLING;
-
-    if (this->isModeReset) {
+    if (this->data.mode == STATE_MODE_RESET) {
       this->data.dice = 0;
       this->data.diceCount = 0;
       this->data.brightness = STATE_BRIGHTNESS_2;
@@ -67,7 +62,7 @@ void State::loop() {
   this->isUpdateLoop = false;
 
   // after a reset loop, transition back to idle
-  if (this->isModeReset) {
+  if (this->data.mode == STATE_MODE_RESET) {
     this->_nextData.mode = STATE_MODE_IDLE;
     this->_pendingStateUpdate = true;
   }
@@ -98,7 +93,7 @@ void State::triggerButton(uint8_t buttonPress) {
 
   this->_lastInteractionAt = millis();
 
-  if (this->isModeResults) {
+  if (this->data.mode == STATE_MODE_RESULTS) {
     if (this->data.dice != buttonPress) {
       return;
     }
@@ -110,7 +105,7 @@ void State::triggerButton(uint8_t buttonPress) {
     }
 
     this->_pendingStateUpdate = true;
-  } else if (!this->isModeRolling) {
+  } else if (this->data.mode != STATE_MODE_ROLLING) {
     this->_nextData.dice = buttonPress;
     if (this->data.dice == buttonPress && this->data.diceCount < 9) {
       this->_nextData.diceCount = this->data.diceCount + 1;
@@ -124,7 +119,7 @@ void State::triggerButton(uint8_t buttonPress) {
 }
 
 void State::triggerRoll() {
-  if (!this->isModeSelectDice) {
+  if (this->data.mode != STATE_MODE_SELECT_DICE) {
     return;
   }
 
