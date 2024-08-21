@@ -7,11 +7,13 @@ void State::loop() {
         this->data.mode != STATE_MODE_RESET &&
         this->data.mode != STATE_MODE_IDLE && idleTime > STATE_IDLE_TIMEOUT) {
       this->setModeReset();
-    } else {
-      this->setBrightness(STATE_BRIGHTNESS_1);
+    } else if (this->data.brightness != STATE_BRIGHTNESS_1) {
+      this->_nextData.brightness = STATE_BRIGHTNESS_1;
+      this->_pendingStateUpdate = true;
     }
   } else if (this->data.brightness != STATE_BRIGHTNESS_2) {
-    this->setBrightness(STATE_BRIGHTNESS_2);
+    this->_nextData.brightness = STATE_BRIGHTNESS_2;
+    this->_pendingStateUpdate = true;
   }
 
   if (this->_pendingStateUpdate) {
@@ -69,20 +71,15 @@ void State::loop() {
 }
 
 void State::setModeReset() {
-  this->_nextData.mode = STATE_MODE_RESET;
-  this->_pendingStateUpdate = true;
+  if (this->data.mode != STATE_MODE_RESET) {
+    this->_nextData.mode = STATE_MODE_RESET;
+    this->_pendingStateUpdate = true;
+  }
 }
 
 void State::setModeResults() {
   this->_nextData.mode = STATE_MODE_RESULTS;
   this->_pendingStateUpdate = true;
-}
-
-void State::setBrightness(uint8_t brightness) {
-  if (this->data.brightness != brightness) {
-    this->_nextData.brightness = brightness;
-    this->_pendingStateUpdate = true;
-  }
 }
 
 void State::triggerButton(uint8_t buttonPress) {

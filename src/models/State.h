@@ -18,30 +18,30 @@ typedef struct {
   uint8_t dice;
   uint8_t diceCount;
   uint8_t brightness;
-  long results[9];
+  uint8_t results[9];
   uint8_t resultIndex;
 } StateData;
 
 class State {
 private:
-  bool _pendingStateUpdate = false;
+  bool _pendingStateUpdate = true; // start with a pending update
   unsigned long _lastInteractionAt = 0;
   unsigned long _lastRolledAt = 0;
   StateData _nextData = {
       .mode = STATE_MODE_RESET,
       .dice = 0,
-      .diceCount = 0,
+      .diceCount = 1,
       .brightness = STATE_BRIGHTNESS_2,
       .results = {1, 1, 1, 1, 1, 1, 1, 1, 1},
       .resultIndex = 0,
   };
 
 public:
-  bool isUpdateLoop = true;
+  bool isUpdateLoop = true; // start in an update loop
   StateData data = {
       .mode = STATE_MODE_RESET,
       .dice = 0,
-      .diceCount = 0,
+      .diceCount = 1,
       .brightness = STATE_BRIGHTNESS_2,
       .results = {1, 1, 1, 1, 1, 1, 1, 1, 1},
       .resultIndex = 0,
@@ -53,7 +53,6 @@ public:
   void setModeReset();
   void setModeResults();
 
-  void setBrightness(uint8_t brightness);
   void triggerButton(uint8_t buttonPress);
   void triggerRoll();
 

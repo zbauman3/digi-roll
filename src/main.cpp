@@ -18,7 +18,6 @@ void setup() {
   hallEffect.begin();
   matrixDisplay.begin();
   ledStrip.begin();
-  state.setModeReset();
 }
 
 void loop() {
