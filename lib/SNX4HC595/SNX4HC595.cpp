@@ -24,6 +24,7 @@ void SNX4HC595_sendByte(SNX4HC595Config *config, uint8_t value) {
     SNX4HC595_sendData(config);
   }
   SNX4HC595_showData(config);
+  digitalWrite(config->data, LOW);
 }
 
 void SNX4HC595_clear(SNX4HC595Config *config) { SNX4HC595_sendByte(config, 0); }

@@ -3,10 +3,11 @@
 void State::loop() {
   unsigned long idleTime = millis() - this->_lastInteractionAt;
   if (idleTime > STATE_BRIGHTNESS_DELAY) {
-    if (this->data.mode != STATE_MODE_RESULTS &&
-        this->data.mode != STATE_MODE_RESET &&
-        this->data.mode != STATE_MODE_IDLE && idleTime > STATE_IDLE_TIMEOUT) {
-      this->setModeReset();
+    if (idleTime > STATE_IDLE_TIMEOUT) {
+      if (this->data.mode == STATE_MODE_SELECT_DICE) {
+        this->_nextData.mode = STATE_MODE_RESET;
+        this->_pendingStateUpdate = true;
+      }
     } else if (this->data.brightness != STATE_BRIGHTNESS_1) {
       this->_nextData.brightness = STATE_BRIGHTNESS_1;
       this->_pendingStateUpdate = true;
@@ -63,16 +64,19 @@ void State::loop() {
 
   this->isUpdateLoop = false;
 
-  // after a reset loop, transition back to idle
+  // sleep/wake logic
   if (this->data.mode == STATE_MODE_RESET) {
-    this->_nextData.mode = STATE_MODE_IDLE;
+    // after a reset loop, transition to sleep
+    this->_nextData.mode = STATE_MODE_SLEEP;
     this->_pendingStateUpdate = true;
-  }
-}
-
-void State::setModeReset() {
-  if (this->data.mode != STATE_MODE_RESET) {
-    this->_nextData.mode = STATE_MODE_RESET;
+  } else if (this->data.mode == STATE_MODE_SLEEP) {
+    // after a sleep loop, go to sleep and set to wake after
+    enterSleep();
+    this->_nextData.mode = STATE_MODE_WAKE;
+    this->_pendingStateUpdate = true;
+  } else if (this->data.mode == STATE_MODE_WAKE) {
+    // after a wake loop, select a dice
+    this->_nextData.mode = STATE_MODE_SELECT_DICE;
     this->_pendingStateUpdate = true;
   }
 }
@@ -84,7 +88,10 @@ void State::setModeResults() {
 
 void State::triggerButton(uint8_t buttonPress) {
   if (buttonPress == 7) {
-    this->setModeReset();
+    if (this->data.mode != STATE_MODE_RESET) {
+      this->_nextData.mode = STATE_MODE_RESET;
+      this->_pendingStateUpdate = true;
+    }
     return;
   }
 

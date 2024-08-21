@@ -1,13 +1,15 @@
 #ifndef Z_STATE_H
 #define Z_STATE_H
 
+#include "utils/sleep.h"
 #include <Arduino.h>
 
-#define STATE_MODE_IDLE 0
 #define STATE_MODE_RESET 1
 #define STATE_MODE_SELECT_DICE 2
 #define STATE_MODE_RESULTS 3
 #define STATE_MODE_ROLLING 4
+#define STATE_MODE_SLEEP 5
+#define STATE_MODE_WAKE 6
 #define STATE_BRIGHTNESS_2 6
 #define STATE_BRIGHTNESS_1 1
 #define STATE_BRIGHTNESS_DELAY 5000
@@ -50,7 +52,6 @@ public:
   void loop();
 
   // ---- setters
-  void setModeReset();
   void setModeResults();
 
   void triggerButton(uint8_t buttonPress);

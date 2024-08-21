@@ -13,6 +13,9 @@ Buttons buttons(&state);
 HallEffect hallEffect(&state);
 
 void setup() {
+  pinMode(11, OUTPUT); // reset should be output low
+  digitalWrite(11, LOW);
+
   sei();
   buttons.begin();
   hallEffect.begin();
