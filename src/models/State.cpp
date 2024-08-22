@@ -4,9 +4,12 @@ void State::loop() {
   unsigned long idleTime = millis() - this->_lastInteractionAt;
   // check if the user has been idle for some time
   if (idleTime > STATE_BRIGHTNESS_DELAY) {
-    // if idle past the timeout, and not in dice select, start sleep cycle
     if (idleTime > STATE_IDLE_TIMEOUT) {
-      if (this->data.mode == STATE_MODE_SELECT_DICE) {
+      // if idle past the timeout and in dice select, or
+      // on results and past results timeout, trigger sleep
+      if (this->data.mode == STATE_MODE_SELECT_DICE ||
+          (this->data.mode == STATE_MODE_RESULTS &&
+           idleTime > STATE_RESULTS_TIMEOUT)) {
         this->_nextData.mode = STATE_MODE_RESET;
         this->_pendingStateUpdate = true;
       }
@@ -47,6 +50,7 @@ void State::loop() {
       this->data.dice = 0;
       this->data.diceCount = 1;
       this->data.brightness = STATE_BRIGHTNESS_2;
+      this->_lastRolledAt = 0;
 
       this->data.results[0] = this->_nextData.results[0] = 1;
       this->data.results[1] = this->_nextData.results[1] = 1;

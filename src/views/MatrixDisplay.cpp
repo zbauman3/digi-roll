@@ -117,7 +117,11 @@ int MatrixDisplay::runCoroutine() {
         this->state->setModeResults();
       } else if (this->state->data.mode == STATE_MODE_RESULTS) {
         // show the results in `2. 20` format
-        this->matrix.writeDigitNum(0, this->state->data.resultIndex + 1, true);
+        // only show the selected dice if more than one was rolled
+        if (this->state->data.diceCount > 1) {
+          this->matrix.writeDigitNum(0, this->state->data.resultIndex + 1,
+                                     true);
+        }
 
         uint8_t currentResult =
             this->state->data.results[this->state->data.resultIndex];
