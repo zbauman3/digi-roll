@@ -53,7 +53,6 @@ public:
 
   // ---- setters
   void setModeResults();
-
   void triggerButton(uint8_t buttonPress);
   void triggerRoll();
 

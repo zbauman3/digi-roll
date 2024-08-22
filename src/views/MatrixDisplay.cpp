@@ -13,7 +13,11 @@ void MatrixDisplay::begin() {
 
 void MatrixDisplay::loop() {
   if (this->state->isUpdateLoop) {
+    // sleep/wake the HT16K33.
+    // @see https://cdn-shop.adafruit.com/datasheets/ht16K33v110.pdf
     if (this->state->data.mode == STATE_MODE_SLEEP) {
+      this->matrix.clear();
+      this->matrix.writeDisplay();
       // sleep the display
       uint8_t buffer[1] = {0x20};
       Wire.beginTransmission(MATRIX_DISPLAY_ADDR);
@@ -21,6 +25,9 @@ void MatrixDisplay::loop() {
         delay(1);
       }
       Wire.endTransmission(true);
+
+      // if sleeping, don't run the routine
+      return;
     } else if (this->state->data.mode == STATE_MODE_WAKE) {
       // wake the display
       uint8_t buffer[1] = {0x21};
@@ -29,6 +36,9 @@ void MatrixDisplay::loop() {
         delay(1);
       }
       Wire.endTransmission(true);
+
+      // if waking, reset
+      this->reset();
     }
   }
 

@@ -30,6 +30,7 @@
 #define PIN_BTN_INT_SETUP()                                                    \
   GIMSK |= (1 << PCIE0);                                                       \
   PCMSK0 |= (1 << PCINT7)
+#define PIN_BTN_INT_IS_PRESSING() (!(PINA & _BV(PINA7)))
 
 #define PIN_LED_SCLK 10
 #define PIN_LED_RCLK 8

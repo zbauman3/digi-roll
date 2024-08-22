@@ -10,7 +10,6 @@
             "includePath": [
                 "/Users/zanebauman/code/digi-roll/include",
                 "/Users/zanebauman/code/digi-roll/src",
-                "/Users/zanebauman/code/digi-roll/lib/SNX4HC595",
                 "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/AceRoutine/src",
                 "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/AceCommon/src",
                 "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit LED Backpack Library",
@@ -42,7 +41,6 @@
                 "path": [
                     "/Users/zanebauman/code/digi-roll/include",
                     "/Users/zanebauman/code/digi-roll/src",
-                    "/Users/zanebauman/code/digi-roll/lib/SNX4HC595",
                     "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/AceRoutine/src",
                     "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/AceCommon/src",
                     "/Users/zanebauman/code/digi-roll/.pio/libdeps/attiny84/Adafruit LED Backpack Library",

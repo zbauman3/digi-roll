@@ -1,7 +1,6 @@
 #ifndef Z_LED_STRIP
 #define Z_LED_STRIP
 
-#include "SNX4HC595.h"
 #include "models/State.h"
 #include "utils/Pins.h"
 #include <AceRoutine.h>
@@ -11,8 +10,11 @@ using namespace ace_routine;
 
 class LedStrip : public Coroutine {
 private:
-  SNX4HC595Config config;
   State *state;
+  uint8_t sclk;
+  uint8_t rclk;
+  uint8_t data;
+  void sendByte(uint8_t value);
 
 public:
   LedStrip(State *_state);

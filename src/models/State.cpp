@@ -39,7 +39,7 @@ void State::loop() {
 
     if (this->data.mode == STATE_MODE_RESET) {
       this->data.dice = 0;
-      this->data.diceCount = 0;
+      this->data.diceCount = 1;
       this->data.brightness = STATE_BRIGHTNESS_2;
 
       this->data.results[0] = this->_nextData.results[0] = 1;
@@ -54,7 +54,7 @@ void State::loop() {
       this->data.resultIndex = 0;
 
       this->_nextData.dice = 0;
-      this->_nextData.diceCount = 0;
+      this->_nextData.diceCount = 1;
       this->_nextData.brightness = STATE_BRIGHTNESS_2;
       this->_nextData.resultIndex = 0;
     }

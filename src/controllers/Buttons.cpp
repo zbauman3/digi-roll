@@ -33,7 +33,7 @@ void Buttons::loop() {
 };
 
 void Buttons::handleInterrupt() {
-  if (!(PINA & _BV(PINA7))) {
+  if (PIN_BTN_INT_IS_PRESSING()) {
     this->didInterrupt = true;
     this->lastPressed[0] = PIN_BTN_0_READ();
     this->lastPressed[1] = PIN_BTN_1_READ();
