@@ -117,7 +117,12 @@ void State::triggerButton(uint8_t buttonPress) {
       this->_nextData.diceCount = 1;
     }
 
-    this->_nextData.mode = STATE_MODE_SELECT_DICE;
+    // this is usually triggered right out of sleep mode.
+    // update everything else, but let the sleep restart logic handle `mode`
+    if (this->data.mode != STATE_MODE_WAKE &&
+        this->data.mode != STATE_MODE_SLEEP) {
+      this->_nextData.mode = STATE_MODE_SELECT_DICE;
+    }
     this->_pendingStateUpdate = true;
   }
 }

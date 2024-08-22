@@ -6,12 +6,34 @@ MatrixDisplay::MatrixDisplay(State *_state) {
 };
 
 void MatrixDisplay::begin() {
-  this->matrix.begin(0x70);
+  this->matrix.begin(MATRIX_DISPLAY_ADDR);
   this->matrix.setBrightness(this->state->data.brightness);
   this->_lastBrightness = this->state->data.brightness;
 }
 
-void MatrixDisplay::loop() { this->runCoroutine(); }
+void MatrixDisplay::loop() {
+  if (this->state->isUpdateLoop) {
+    if (this->state->data.mode == STATE_MODE_SLEEP) {
+      // sleep the display
+      uint8_t buffer[1] = {0x20};
+      Wire.beginTransmission(MATRIX_DISPLAY_ADDR);
+      while (Wire.write(buffer, 1) != 1) {
+        delay(1);
+      }
+      Wire.endTransmission(true);
+    } else if (this->state->data.mode == STATE_MODE_WAKE) {
+      // wake the display
+      uint8_t buffer[1] = {0x21};
+      Wire.beginTransmission(MATRIX_DISPLAY_ADDR);
+      while (Wire.write(buffer, 1) != 1) {
+        delay(1);
+      }
+      Wire.endTransmission(true);
+    }
+  }
+
+  this->runCoroutine();
+}
 
 int MatrixDisplay::runCoroutine() {
   COROUTINE_LOOP() {

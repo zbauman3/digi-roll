@@ -5,8 +5,11 @@
 #include "models/State.h"
 #include <AceRoutine.h>
 #include <Adafruit_GFX.h>
+#include <Wire.h>
 
 using namespace ace_routine;
+
+#define MATRIX_DISPLAY_ADDR 0x70
 
 class MatrixDisplay : public Coroutine {
 private:
