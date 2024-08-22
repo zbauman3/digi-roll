@@ -1,5 +1,9 @@
 #include "./MatrixDisplay.h"
 
+// !! README !!
+// Don't use the string functions from `Adafruit_7segment`.
+// They take too much space.
+
 MatrixDisplay::MatrixDisplay(State *_state) {
   this->state = _state;
   this->matrix = Adafruit_7segment();
@@ -13,9 +17,12 @@ void MatrixDisplay::begin() {
 
 void MatrixDisplay::loop() {
   if (this->state->isUpdateLoop) {
-    // sleep/wake the HT16K33.
+    // sleep/wake the HT16K33, otherwise is can use multiple mA.
+    // `Adafruit_7segment` doesn't give access to its internal `Wire`, but it
+    // defaults to the global one. So we can just use that too.
     // @see https://cdn-shop.adafruit.com/datasheets/ht16K33v110.pdf
     if (this->state->data.mode == STATE_MODE_SLEEP) {
+      // clear anything
       this->matrix.clear();
       this->matrix.writeDisplay();
       // sleep the display
@@ -26,7 +33,7 @@ void MatrixDisplay::loop() {
       }
       Wire.endTransmission(true);
 
-      // if sleeping, don't run the routine
+      // if sleeping, don't run the coroutine
       return;
     } else if (this->state->data.mode == STATE_MODE_WAKE) {
       // wake the display
@@ -49,14 +56,16 @@ int MatrixDisplay::runCoroutine() {
   COROUTINE_LOOP() {
     if (this->state->isUpdateLoop) {
       if (this->_lastBrightness != this->state->data.brightness) {
-        this->_lastBrightness = this->state->data.brightness;
         this->matrix.setBrightness(this->state->data.brightness);
+        this->_lastBrightness = this->state->data.brightness;
+        // yield after transmit to give others a turn to run
         COROUTINE_YIELD();
       }
 
       this->matrix.clear();
 
       if (this->state->data.mode == STATE_MODE_SELECT_DICE) {
+        // show results in `2d20` format
         this->matrix.writeDigitNum(0, this->state->data.diceCount);
         this->matrix.writeDigitAscii(1, 'd');
 
@@ -73,6 +82,7 @@ int MatrixDisplay::runCoroutine() {
           this->matrix.writeDigitNum(4, diceCount % 10);
           break;
         case 100:
+          // It's a "percentile" roll, so we can show "P". "100" won't fit
           this->matrix.writeDigitAscii(4, 'P');
           break;
         case 20:
@@ -84,6 +94,7 @@ int MatrixDisplay::runCoroutine() {
 
         this->matrix.writeDisplay();
       } else if (this->state->data.mode == STATE_MODE_ROLLING) {
+        // animate a circle around each segment in a row
         for (this->j = 0; this->j < 5; this->j++) {
           if (this->j == 2) {
             this->j++;
@@ -105,6 +116,7 @@ int MatrixDisplay::runCoroutine() {
 
         this->state->setModeResults();
       } else if (this->state->data.mode == STATE_MODE_RESULTS) {
+        // show the results in `2. 20` format
         this->matrix.writeDigitNum(0, this->state->data.resultIndex + 1, true);
 
         uint8_t currentResult =
@@ -122,8 +134,6 @@ int MatrixDisplay::runCoroutine() {
           this->matrix.writeDigitNum(4, 0);
         }
 
-        this->matrix.writeDisplay();
-      } else if (this->state->data.mode == STATE_MODE_RESET) {
         this->matrix.writeDisplay();
       }
     }

@@ -2,7 +2,7 @@
 #include "./HallEffect.h"
 
 HallEffect *isrHallEffect;
-ISR(PCINT1_vect) { isrHallEffect->handleInterrupt(); }
+ISR(PIN_HALL_INT_VECT) { isrHallEffect->handleInterrupt(); }
 
 HallEffect::HallEffect(State *_state) {
   this->state = _state;
@@ -18,6 +18,7 @@ void HallEffect::begin() {
 }
 
 void HallEffect::loop() {
+  // enable/disable the hall effect sensor depending on the mode
   if (this->state->isUpdateLoop) {
     if (this->state->data.mode == STATE_MODE_SELECT_DICE) {
       if (!this->isEnabled) {
@@ -38,7 +39,7 @@ void HallEffect::loop() {
 }
 
 void HallEffect::handleInterrupt() {
-  if (!(PINB & _BV(PINB0))) {
+  if (PIN_HALL_INT_IS_ACTIVE()) {
     this->didInterrupt = true;
   }
 }

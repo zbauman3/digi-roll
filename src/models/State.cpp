@@ -2,21 +2,26 @@
 
 void State::loop() {
   unsigned long idleTime = millis() - this->_lastInteractionAt;
+  // check if the user has been idle for some time
   if (idleTime > STATE_BRIGHTNESS_DELAY) {
+    // if idle past the timeout, and not in dice select, start sleep cycle
     if (idleTime > STATE_IDLE_TIMEOUT) {
       if (this->data.mode == STATE_MODE_SELECT_DICE) {
         this->_nextData.mode = STATE_MODE_RESET;
         this->_pendingStateUpdate = true;
       }
+      // otherwise, dim the brightness
     } else if (this->data.brightness != STATE_BRIGHTNESS_1) {
       this->_nextData.brightness = STATE_BRIGHTNESS_1;
       this->_pendingStateUpdate = true;
     }
+    // otherwise, reset the brightness
   } else if (this->data.brightness != STATE_BRIGHTNESS_2) {
     this->_nextData.brightness = STATE_BRIGHTNESS_2;
     this->_pendingStateUpdate = true;
   }
 
+  // if an update is scheduled, apply the update
   if (this->_pendingStateUpdate) {
     this->_pendingStateUpdate = false;
     this->isUpdateLoop = true;
@@ -37,6 +42,7 @@ void State::loop() {
     this->data.results[8] = this->_nextData.results[8];
     this->data.resultIndex = this->_nextData.resultIndex;
 
+    // if this was a transition to a reset mode, clear all data
     if (this->data.mode == STATE_MODE_RESET) {
       this->data.dice = 0;
       this->data.diceCount = 1;
@@ -62,20 +68,22 @@ void State::loop() {
     return;
   }
 
+  // not an update loop, reset the flag
   this->isUpdateLoop = false;
 
   // sleep/wake logic
   if (this->data.mode == STATE_MODE_RESET) {
-    // after a reset loop, transition to sleep
+    // after a reset loop, signal that sleep is incoming with a sleep loop
     this->_nextData.mode = STATE_MODE_SLEEP;
     this->_pendingStateUpdate = true;
   } else if (this->data.mode == STATE_MODE_SLEEP) {
-    // after a sleep loop, go to sleep and set to wake after
+    // after a sleep loop, go to sleep. Upon wake, start a wake loop
     enterSleep();
     this->_nextData.mode = STATE_MODE_WAKE;
     this->_pendingStateUpdate = true;
   } else if (this->data.mode == STATE_MODE_WAKE) {
-    // after a wake loop, select a dice
+    // after a wake loop, always go to dice select - since only a button press
+    // can wake from sleep
     this->_nextData.mode = STATE_MODE_SELECT_DICE;
     this->_pendingStateUpdate = true;
   }
@@ -87,6 +95,7 @@ void State::setModeResults() {
 }
 
 void State::triggerButton(uint8_t buttonPress) {
+  // 7th button is the reset button
   if (buttonPress == 7) {
     if (this->data.mode != STATE_MODE_RESET) {
       this->_nextData.mode = STATE_MODE_RESET;
@@ -95,13 +104,16 @@ void State::triggerButton(uint8_t buttonPress) {
     return;
   }
 
+  // any other button is considered an interaction
   this->_lastInteractionAt = millis();
 
   if (this->data.mode == STATE_MODE_RESULTS) {
+    // if in results, on the button for the result is active
     if (this->data.dice != buttonPress) {
       return;
     }
 
+    // cycle through the results each time the button is pressed
     if (this->data.resultIndex + 2 > this->data.diceCount) {
       this->_nextData.resultIndex = 0;
     } else {
@@ -111,6 +123,8 @@ void State::triggerButton(uint8_t buttonPress) {
     this->_pendingStateUpdate = true;
   } else if (this->data.mode != STATE_MODE_ROLLING) {
     this->_nextData.dice = buttonPress;
+
+    // if a repeat press, increment the count through 9, then loop back to 1
     if (this->data.dice == buttonPress && this->data.diceCount < 9) {
       this->_nextData.diceCount = this->data.diceCount + 1;
     } else {
@@ -118,7 +132,7 @@ void State::triggerButton(uint8_t buttonPress) {
     }
 
     // this is usually triggered right out of sleep mode.
-    // update everything else, but let the sleep restart logic handle `mode`
+    // update everything else, but let the sleep/wake logic handle `mode`
     if (this->data.mode != STATE_MODE_WAKE &&
         this->data.mode != STATE_MODE_SLEEP) {
       this->_nextData.mode = STATE_MODE_SELECT_DICE;
@@ -132,26 +146,32 @@ void State::triggerRoll() {
     return;
   }
 
+  // if this is the first roll, start a timer
   if (this->_lastRolledAt == 0) {
     this->_lastRolledAt = millis();
     this->_lastInteractionAt = this->_lastRolledAt;
     return;
   }
 
+  // if this is a second roll, debounce
+  // anything greater is considered 2 spins
   unsigned long now = millis();
   if (now - this->_lastRolledAt < 150) {
     return;
   }
 
   this->_lastInteractionAt = now;
+  // use the ms between the two spins as a seed for the RNG
   unsigned long seedBase = now - this->_lastRolledAt;
   this->_lastRolledAt = 0;
 
+  // +1 because `random` is non inclusive of the `max` value
   uint8_t diceCountMax = this->getDiceCount() + 1;
   for (uint8_t i = 0; i < this->data.diceCount; i++) {
-    randomSeed(seedBase + i);
+    randomSeed(seedBase + i); // a different seed for each dice
     this->_nextData.results[i] = random(1, diceCountMax);
-    delay(((uint8_t)(seedBase % this->data.diceCount)) + 1 + i);
+    // delay for a few MS between each random number
+    delay(((uint8_t)(seedBase % this->data.diceCount)) + i + 1);
   }
 
   this->_nextData.mode = STATE_MODE_ROLLING;

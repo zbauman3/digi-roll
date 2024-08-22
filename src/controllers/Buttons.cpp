@@ -1,7 +1,7 @@
 #include "./Buttons.h"
 
 Buttons *isrButtons;
-ISR(PCINT0_vect) { isrButtons->handleInterrupt(); }
+ISR(PIN_BTN_INT_VECT) { isrButtons->handleInterrupt(); }
 
 Buttons::Buttons(State *_state) {
   this->state = _state;
@@ -22,12 +22,15 @@ void Buttons::loop() {
   }
   this->didInterrupt = false;
 
+  // software debounce
   unsigned long now = millis();
   if (now - this->lastPressedAt < 200) {
     return;
   }
 
   this->lastPressedAt = now;
+
+  // decode to decimal
   this->state->triggerButton(this->lastPressed[0] + (this->lastPressed[1] * 2) +
                              (this->lastPressed[2] * 4));
 };

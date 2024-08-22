@@ -56,7 +56,7 @@ public:
   void triggerButton(uint8_t buttonPress);
   void triggerRoll();
 
-  // -- utils
+  // ---- utils
   uint8_t getDiceCount();
 };
 

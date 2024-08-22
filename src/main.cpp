@@ -3,8 +3,6 @@
 #include "models/State.h"
 #include "views/LedStrip.h"
 #include "views/MatrixDisplay.h"
-#include <Arduino.h>
-#include <Wire.h>
 
 State state;
 MatrixDisplay matrixDisplay(&state);
@@ -13,7 +11,8 @@ Buttons buttons(&state);
 HallEffect hallEffect(&state);
 
 void setup() {
-  pinMode(11, OUTPUT); // reset should be output low
+  // reset should be output low
+  pinMode(11, OUTPUT);
   digitalWrite(11, LOW);
 
   sei();
@@ -24,11 +23,14 @@ void setup() {
 }
 
 void loop() {
+  // controllers
   buttons.loop();
   hallEffect.loop();
 
+  // models
   state.loop();
 
+  // views
   matrixDisplay.loop();
   ledStrip.loop();
 }

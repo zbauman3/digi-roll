@@ -2,7 +2,7 @@
 
 void enterSleep() {
   // a hack to make pressing `reset` not wake the device when releasing
-  delay(750);
+  delay(1000);
   ADCSRA &= ~(_BV(ADEN));
   ACSR |= _BV(ACD);
   power_adc_disable();

@@ -14,22 +14,30 @@
 //
 
 #define PIN_HALL_INT 0
+#define PIN_HALL_INT_VECT PCINT1_vect
+// setup the interrupt for the hall effect sensor
 #define PIN_HALL_INT_SETUP()                                                   \
   GIMSK |= (1 << PCIE1);                                                       \
   PCMSK1 |= (1 << PCINT8)
+// check if the hall effect sensor is currently triggering
+#define PIN_HALL_INT_IS_ACTIVE() (!(PINB & _BV(PINB0)))
 #define PIN_HALL_ENABLE 7
 
 #define PIN_BTN_0 5
 #define PIN_BTN_1 1
 #define PIN_BTN_2 2
+// read the buttons without using the arduino libs
 #define PIN_BTN_0_READ() ((PINA & _BV(PINA5)) ? 1 : 0)
 #define PIN_BTN_1_READ() ((PINB & _BV(PINB1)) ? 1 : 0)
 #define PIN_BTN_2_READ() ((PINB & _BV(PINB2)) ? 1 : 0)
 
 #define PIN_BTN_INT 3
+#define PIN_BTN_INT_VECT PCINT0_vect
+// setup the interrupt for the buttons
 #define PIN_BTN_INT_SETUP()                                                    \
   GIMSK |= (1 << PCIE0);                                                       \
   PCMSK0 |= (1 << PCINT7)
+// check if the buttons are currently triggering
 #define PIN_BTN_INT_IS_PRESSING() (!(PINA & _BV(PINA7)))
 
 #define PIN_LED_SCLK 10
