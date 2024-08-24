@@ -28,6 +28,15 @@ void Buttons::loop() {
     return;
   }
 
+  // Sometimes the button bounces so fast that we end up reading `0` because we
+  // read during a bounce. This should help prevent that by not allowing
+  // switching to the `0` dice without a 1.5s delay
+  if (this->state->data.dice != 0 && this->lastPressed[0] == 0 &&
+      this->lastPressed[1] == 0 && this->lastPressed[2] == 0 &&
+      now - this->lastPressedAt < 1500) {
+    return;
+  }
+
   this->lastPressedAt = now;
 
   // decode to decimal
