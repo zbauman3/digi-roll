@@ -15,13 +15,14 @@
 #define STATE_BRIGHTNESS_DELAY 5000
 #define STATE_IDLE_TIMEOUT (STATE_BRIGHTNESS_DELAY * 2)
 #define STATE_RESULTS_TIMEOUT 120000
+#define STATE_ROLL_DEBOUNCE 10000
 
 typedef struct {
   uint8_t mode;
   uint8_t dice;
   uint8_t diceCount;
   uint8_t brightness;
-  uint8_t results[9];
+  long results[9];
   uint8_t resultIndex;
 } StateData;
 
@@ -30,6 +31,7 @@ private:
   bool _pendingStateUpdate = true; // start with a pending update
   unsigned long _lastInteractionAt = 0;
   unsigned long _lastRolledAt = 0;
+  bool seedComplete = false;
   StateData _nextData = {
       .mode = STATE_MODE_RESET,
       .dice = 0,

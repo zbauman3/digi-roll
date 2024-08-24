@@ -152,30 +152,31 @@ void State::triggerRoll() {
 
   // if this is the first roll, start a timer
   if (this->_lastRolledAt == 0) {
-    this->_lastRolledAt = millis();
-    this->_lastInteractionAt = this->_lastRolledAt;
+    this->_lastRolledAt = micros();
+    this->_lastInteractionAt = millis();
     return;
   }
 
-  // if this is a second roll, debounce
+  // if this is a second roll, debounce.
   // anything greater is considered 2 spins
-  unsigned long now = millis();
-  if (now - this->_lastRolledAt < 150) {
+  unsigned long diff = micros() - this->_lastRolledAt;
+  if (diff < STATE_ROLL_DEBOUNCE) {
     return;
   }
 
-  this->_lastInteractionAt = now;
-  // use the ms between the two spins as a seed for the RNG
-  unsigned long seedBase = now - this->_lastRolledAt;
+  // only do the seed once
+  if (!this->seedComplete) {
+    this->seedComplete = true;
+    randomSeed(diff);
+  }
+
+  this->_lastInteractionAt = millis();
   this->_lastRolledAt = 0;
 
   // +1 because `random` is non inclusive of the `max` value
   uint8_t diceCountMax = this->getDiceCount() + 1;
   for (uint8_t i = 0; i < this->data.diceCount; i++) {
-    randomSeed(seedBase + i); // a different seed for each dice
     this->_nextData.results[i] = random(1, diceCountMax);
-    // delay for a few MS between each random number
-    delay(((uint8_t)(seedBase % this->data.diceCount)) + i + 1);
   }
 
   this->_nextData.mode = STATE_MODE_ROLLING;
