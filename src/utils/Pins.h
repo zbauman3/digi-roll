@@ -8,7 +8,7 @@
 //  HALL INT   (D  0)  PB0  2|    |13  PA0  (D 10)        LED SCK
 //  BTN 1      (D  1)  PB1  3|    |12  PA1  (D  9)        LED DATA
 //             (D 11)  PB3  4|    |11  PA2  (D  8)        LED RCLK
-//  BTN 2      (D  2)  PB2  5|    |10  PA3  (D  7)        NPN BPJ
+//  BTN 2      (D  2)  PB2  5|    |10  PA3  (D  7)        HALL EN
 //  BTN INT    (D  3)  PA7  6|    |9   PA4  (D  6)        I2C SCL
 //  I2C SDA    (D  4)  PA6  7|    |8   PA5  (D  5)        BTN 0
 //
