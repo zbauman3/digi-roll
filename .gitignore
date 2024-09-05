@@ -2,8 +2,8 @@
 .vscode/.browse.c_cpp.db*
 .vscode/launch.json
 .vscode/ipch
-*-backups
-*.kicad_pcb
-*.kicad_prl
-*.kicad_pro
-*.lck
+KiCad/*
+!KiCad/*.kicad_sch
+!KiCad/*.kicad_pcb
+!KiCad/*.zip
+.DS_Store
