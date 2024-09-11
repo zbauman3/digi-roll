@@ -55,17 +55,37 @@ void LedStrip::loop() {
   this->runCoroutine();
 }
 
+uint8_t LedStrip::diceToLedBitmap() {
+  switch (this->state->data.dice) {
+  case STATE_BUTTON_4:
+    return _BV(0);
+  case STATE_BUTTON_6:
+    return _BV(1);
+  case STATE_BUTTON_8:
+    return _BV(2);
+  case STATE_BUTTON_10:
+    return _BV(3);
+  case STATE_BUTTON_12:
+    return _BV(4);
+  case STATE_BUTTON_100:
+    return _BV(5);
+  case STATE_BUTTON_20:
+  default:
+    return _BV(6);
+  }
+}
+
 int LedStrip::runCoroutine() {
   COROUTINE_LOOP() {
     if (this->state->isUpdateLoop &
         (this->state->data.mode == STATE_MODE_RESULTS ||
          this->state->data.mode == STATE_MODE_ROLLING)) {
-      this->sendByte((1 << this->state->data.dice));
+      this->sendByte(this->diceToLedBitmap());
     }
 
     // flash
     if (this->state->data.mode == STATE_MODE_SELECT_DICE) {
-      this->sendByte((1 << this->state->data.dice));
+      this->sendByte(this->diceToLedBitmap());
       COROUTINE_DELAY(500);
       this->sendByte(0b00000000);
       COROUTINE_DELAY(500);

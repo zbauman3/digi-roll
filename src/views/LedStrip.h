@@ -15,6 +15,7 @@ private:
   uint8_t rclk;
   uint8_t data;
   void sendByte(uint8_t value);
+  uint8_t diceToLedBitmap();
 
 public:
   LedStrip(State *_state);

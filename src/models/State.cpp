@@ -14,7 +14,9 @@ void State::loop() {
         this->_pendingStateUpdate = true;
       }
       // otherwise, dim the brightness
-    } else if (this->data.brightness != STATE_BRIGHTNESS_1) {
+    } else if (this->data.brightness != STATE_BRIGHTNESS_1 &&
+               this->data.mode != STATE_MODE_RESET &&
+               this->_nextData.mode != STATE_MODE_RESET) {
       this->_nextData.brightness = STATE_BRIGHTNESS_1;
       this->_pendingStateUpdate = true;
     }
@@ -99,8 +101,7 @@ void State::setModeResults() {
 }
 
 void State::triggerButton(uint8_t buttonPress) {
-  // 7th button is the reset button
-  if (buttonPress == 7) {
+  if (buttonPress == STATE_BUTTON_RESET) {
     if (this->data.mode != STATE_MODE_RESET) {
       this->_nextData.mode = STATE_MODE_RESET;
       this->_pendingStateUpdate = true;
@@ -185,19 +186,19 @@ void State::triggerRoll() {
 
 uint8_t State::getDiceCount() {
   switch (this->data.dice) {
-  case 0:
+  case STATE_BUTTON_4:
     return 4;
-  case 1:
+  case STATE_BUTTON_6:
     return 6;
-  case 2:
+  case STATE_BUTTON_8:
     return 8;
-  case 3:
+  case STATE_BUTTON_10:
     return 10;
-  case 4:
+  case STATE_BUTTON_12:
     return 12;
-  case 6:
+  case STATE_BUTTON_100:
     return 100;
-  case 5:
+  case STATE_BUTTON_20:
   default:
     return 20;
   }

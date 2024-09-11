@@ -17,6 +17,15 @@
 #define STATE_RESULTS_TIMEOUT 120000
 #define STATE_ROLL_DEBOUNCE 10000
 
+#define STATE_BUTTON_RESET 0
+#define STATE_BUTTON_20 1
+#define STATE_BUTTON_100 2
+#define STATE_BUTTON_12 3
+#define STATE_BUTTON_10 4
+#define STATE_BUTTON_8 5
+#define STATE_BUTTON_6 7
+#define STATE_BUTTON_4 6
+
 typedef struct {
   uint8_t mode;
   uint8_t dice;
