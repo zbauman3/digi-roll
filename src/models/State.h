@@ -23,8 +23,8 @@
 #define STATE_BUTTON_12 3
 #define STATE_BUTTON_10 4
 #define STATE_BUTTON_8 5
-#define STATE_BUTTON_6 7
-#define STATE_BUTTON_4 6
+#define STATE_BUTTON_6 6
+#define STATE_BUTTON_4 7
 
 typedef struct {
   uint8_t mode;
