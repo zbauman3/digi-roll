@@ -69,7 +69,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60115",
+                "PLATFORMIO=60116",
                 "ARDUINO_AVR_ATTINYX4",
                 "F_CPU=1000000L",
                 "ARDUINO_ARCH_AVR",
