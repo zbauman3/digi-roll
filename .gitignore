@@ -2,8 +2,9 @@
 .vscode/.browse.c_cpp.db*
 .vscode/launch.json
 .vscode/ipch
-KiCad/*
-!KiCad/*.kicad_sch
-!KiCad/*.kicad_pcb
-!KiCad/*.zip
+docs/assets/KiCad/*
+!docs/assets/KiCad/*.kicad_sch
+!docs/assets/KiCad/*.kicad_pcb
+!docs/assets/KiCad/*.zip
+!docs/assets/KiCad/*.png
 .DS_Store
