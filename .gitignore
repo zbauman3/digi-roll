@@ -8,3 +8,5 @@ docs/assets/KiCad/*
 !docs/assets/KiCad/*.zip
 !docs/assets/KiCad/*.png
 .DS_Store
+_site
+.jekyll-cache

@@ -1,4 +1,7 @@
-# Schematics
+---
+layout: page
+title: Schema
+---
 
 The schematics were built with KiCad. I've also included the exported Gerber `.zip` file that can be sent to the manufacturer directly.
 

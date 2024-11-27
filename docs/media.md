@@ -1,7 +1,9 @@
-# Media
+---
+layout: page
+title: Media
+---
 
-- [Media](#media)
-  - [Assembled](#assembled)
+- [Assembled](#assembled)
 
 ## Assembled
 

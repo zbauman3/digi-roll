@@ -1,4 +1,7 @@
-# 3D Models
+---
+layout: page
+title: 3D Models
+---
 
 If you want to print the objects yourself, here are the 3D models in `.step` format.
 

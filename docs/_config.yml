@@ -1,5 +1,11 @@
-markdown: GFM
+title: DigiRoll
+author:
+  name: Zane Bauman
+  email: zanebauman55@gmail.com
+
+# markdown: GFM
 kramdown:
   input: GFM
 
-theme: jekyll-theme-cayman
+minima:
+  skin: dark

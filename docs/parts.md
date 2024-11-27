@@ -1,4 +1,7 @@
-# Parts Info
+---
+layout: page
+title: Parts
+---
 
 <!-- These are all of the parts that were bought to build this project. There were some odds and ends that I already owned and cannot find a good link for (plugs, wires, etc). -->
 
