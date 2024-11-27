@@ -1,4 +1,5 @@
 title: DigiRoll
+description: A digital DnD dice roller
 author:
   name: Zane Bauman
   email: zanebauman55@gmail.com
@@ -6,6 +7,3 @@ author:
 # markdown: GFM
 kramdown:
   input: GFM
-
-minima:
-  skin: dark
