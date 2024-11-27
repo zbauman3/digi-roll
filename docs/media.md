@@ -10,7 +10,7 @@ title: Media
 
 ## Assembled
 
-<video controls="controls" class="img-full">
+<video controls="controls" class="img-full" cover="./assets/media/assembled/front.jpeg">
   <source src="./assets/media/assembled/usage-demo.MOV">
 </video>
 
