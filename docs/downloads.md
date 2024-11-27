@@ -3,8 +3,15 @@ layout: default
 title: Downloads
 ---
 
+- [Source Code](#source-code)
 - [3D Models](#3d-models)
 - [KiCad Assets](#kicad-assets)
+
+## Source Code
+
+This project was developed using [PlatformIO](https://platformio.org/) with the [Arduino](https://docs.platformio.org/en/latest/frameworks/arduino.html) framework.
+
+You can view / fork the source code here: [zbauman3/digi-roll](https://github.com/zbauman3/digi-roll).
 
 ## 3D Models
 
