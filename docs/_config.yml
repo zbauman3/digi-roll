@@ -4,6 +4,6 @@ author:
   name: Zane Bauman
   email: zanebauman55@gmail.com
 
-# markdown: GFM
+markdown: GFM
 kramdown:
   input: GFM
