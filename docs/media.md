@@ -11,24 +11,25 @@ title: Media
 ## Assembled
 
 <video controls="controls" class="img-full">
-  <source src="./assets/media/assembled/usage-demo-2.mov">
+  <source src="./assets/media/assembled/usage-demo-1.MOV">
 </video>
 
-<img src="./assets/media/assembled/front-on.jpeg" class="img-full" />
-
-<img src="./assets/media/assembled/front-side-on.jpeg" class="img-full" />
-
-<img src="./assets/media/assembled/front-side-2-on.jpeg" class="img-full" />
-
-<img src="./assets/media/assembled/back-on.jpeg" class="img-full" />
 
 <img src="./assets/media/assembled/front.jpeg" class="img-full" />
 
+<img src="./assets/media/assembled/front-side.jpeg" class="img-full" />
+
+<img src="./assets/media/assembled/front-side-2.jpeg" class="img-full" />
+
+<img src="./assets/media/assembled/back-side.jpeg" class="img-full" />
+
+<img src="./assets/media/assembled/front-on.jpeg" class="img-full" />
+
 <img src="./assets/media/assembled/back.jpeg" class="img-full" />
 
-<img src="./assets/media/assembled/open-front.jpeg" class="img-full" />
+<img src="./assets/media/assembled/front-open.jpeg" class="img-full" />
 
-<img src="./assets/media/assembled/open-back.jpeg" class="img-full" />
+<img src="./assets/media/assembled/back-open.jpeg" class="img-full" />
 
 ## PCB
 
