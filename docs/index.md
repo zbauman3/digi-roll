@@ -7,7 +7,7 @@ title: Home
 
 DigiRoll is a digital dice roller, specifically targeting Dungeons And Dragons.
 
-<img src="./assets/media/assembled/front-on.jpeg" class="img-full" />
+<img src="./assets/media/assembled/front-side.jpeg" class="img-full" />
 
 ## Hardware
 
