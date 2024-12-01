@@ -11,7 +11,7 @@ title: Media
 ## Assembled
 
 <video controls="controls" class="img-full" cover="./assets/media/assembled/front.jpeg">
-  <source src="./assets/media/assembled/usage-demo.MOV">
+  <source src="./assets/media/assembled/usage-demo.mov">
 </video>
 
 <img src="./assets/media/assembled/front-on.jpeg" class="img-full" />
@@ -20,9 +20,9 @@ title: Media
 
 <img src="./assets/media/assembled/front-side-2-on.jpeg" class="img-full" />
 
-<img src="./assets/media/assembled/front.jpeg" class="img-full" />
+<img src="./assets/media/assembled/back-on.jpeg" class="img-full" />
 
-<img src="./assets/media/assembled/front-side.jpeg" class="img-full" />
+<img src="./assets/media/assembled/front.jpeg" class="img-full" />
 
 <img src="./assets/media/assembled/back.jpeg" class="img-full" />
 
