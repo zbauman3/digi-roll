@@ -48,4 +48,4 @@ The project required handling multiple tasks concurrently, and I would normally 
 
 For the software architecture, I used a MVC pattern. This approach allowed for a clear separation of input, state, and output logic. Controllers manage the buttons and Hall effect sensors, views handle the LEDs and 7-segment display, and a single “state” model ties everything together. Overall, this organization worked well, although some controller logic ended up in the state model. I may revisit this in a future iteration to improve the separation of concerns.
 
-The final program occupies 6,890 bytes of flash and uses 269 bytes of RAM.
+The final program occupies 6,994 bytes of flash and uses 269 bytes of RAM.
