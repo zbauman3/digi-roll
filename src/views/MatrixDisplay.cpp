@@ -119,23 +119,35 @@ int MatrixDisplay::runCoroutine() {
         // show the results in `2. 20` format
         // only show the selected dice if more than one was rolled
         if (this->state->data.diceCount > 1) {
-          this->matrix.writeDigitNum(0, this->state->data.resultIndex + 1,
-                                     true);
+          // if resultIndex == diceCount, show the sum
+          if (this->state->data.resultIndex == this->state->data.diceCount) {
+            this->matrix.writeDigitAscii(0, '=');
+          } else {
+            this->matrix.writeDigitNum(0, this->state->data.resultIndex + 1,
+                                       true);
+          }
         }
 
-        uint8_t currentResult =
-            this->state->data.results[this->state->data.resultIndex];
-        if (currentResult < 10) {
-          this->matrix.writeDigitNum(4, currentResult);
-        } else if (currentResult < 100) {
-          uint8_t lsd = currentResult % 10;
-          this->matrix.writeDigitNum(
-              3, (uint8_t)((uint8_t)(currentResult - lsd) / (uint8_t)10));
-          this->matrix.writeDigitNum(4, lsd);
+        uint16_t dispResult = 0;
+
+        // if resultIndex == diceCount, show the sum
+        if (this->state->data.resultIndex == this->state->data.diceCount) {
+          for (this->i = 0; this->i < this->state->data.diceCount; this->i++) {
+            dispResult += this->state->data.results[this->i];
+          }
         } else {
-          this->matrix.writeDigitNum(1, 1);
-          this->matrix.writeDigitNum(3, 0);
-          this->matrix.writeDigitNum(4, 0);
+          dispResult = this->state->data.results[this->state->data.resultIndex];
+        }
+
+        if (dispResult < 10) {
+          this->matrix.writeDigitNum(4, dispResult);
+        } else if (dispResult < 100) {
+          this->matrix.writeDigitNum(3, (uint8_t)ceil(dispResult / 10));
+          this->matrix.writeDigitNum(4, (uint8_t)(dispResult % 10));
+        } else {
+          this->matrix.writeDigitNum(1, (uint8_t)ceil(dispResult / 100));
+          this->matrix.writeDigitNum(3, (uint8_t)ceil((dispResult % 100) / 10));
+          this->matrix.writeDigitNum(4, (uint8_t)(dispResult % 10));
         }
 
         this->matrix.writeDisplay();

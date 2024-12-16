@@ -22,25 +22,24 @@ void Buttons::loop() {
   }
   this->didInterrupt = false;
 
+  uint8_t local_lastPressed[3] = {0, 0, 0};
+  ATOMIC_BLOCK(ATOMIC_FORCEON) {
+    local_lastPressed[0] = this->lastPressed[0];
+    local_lastPressed[1] = this->lastPressed[1];
+    local_lastPressed[2] = this->lastPressed[2];
+  }
+
   // software debounce
   unsigned long now = millis();
   if (now - this->lastPressedAt < 200) {
     return;
   }
 
-  // Sometimes the button bounces so fast that we end up reading `0` because we
-  // read during a bounce. This should help prevent that by not allowing
-  // switching to `0` without a delay
-  if (this->lastPressed[0] == 0 && this->lastPressed[1] == 0 &&
-      this->lastPressed[2] == 0 && now - this->lastPressedAt < 750) {
-    return;
-  }
-
   this->lastPressedAt = now;
 
   // decode to decimal
-  this->state->triggerButton(this->lastPressed[0] + (this->lastPressed[1] * 2) +
-                             (this->lastPressed[2] * 4));
+  this->state->triggerButton(local_lastPressed[0] + (local_lastPressed[1] * 2) +
+                             (local_lastPressed[2] * 4));
 };
 
 void Buttons::handleInterrupt() {

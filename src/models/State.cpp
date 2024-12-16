@@ -118,8 +118,11 @@ void State::triggerButton(uint8_t buttonPress) {
       return;
     }
 
-    // cycle through the results each time the button is pressed
-    if (this->data.resultIndex + 2 > this->data.diceCount) {
+    // Cycle through the results each time the button is pressed.
+    // Even though resultIndex is a zero-based index, we allow it to go one
+    // over. The last value (resultIndex == diceCount) is when we show the sum
+    // of all of the rolls
+    if (this->data.resultIndex == this->data.diceCount) {
       this->_nextData.resultIndex = 0;
     } else {
       this->_nextData.resultIndex = this->data.resultIndex + 1;
