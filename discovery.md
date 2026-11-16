@@ -31,11 +31,11 @@ Working doc for V2 discovery. It is meant for both humans and agents.
     - The chosen regulator's EN pin must be rated up to max VIN, or the button path needs a resistor divider or clamp.
     - The diode on the GPIO side is **required**, because it keeps battery voltage off the RP2350's 3.3 V pin.
 - **Wake source: button only.** The spinner does not need to wake the device.
-- **Display: 16×16 LED matrix, monochrome (each pixel on or off).**
+- **Display: 16×16 LED matrix, monochrome (single LED color) with 4-bit grayscale: 16 brightness levels per pixel.**
   - Rejected: 16×8 (one line of four characters, little gain over V1's 7-segment), 32×8 (the device should be roughly square), and a Sharp memory LCD (more than wanted; the glowing LED look stays).
   - Content: a 3×5 font gives two lines of four characters. Dice selection (e.g. `3d20`) on top, result below, spare rows for a progress bar or roll animation.
-  - **Icons and animations are a V2 goal**: 16×16 single-color pixel art, such as fire (e.g. a flicker on a crit), a skull and crossbones, or a d20 outline.
-  - **Double buffering is required**: draw into one buffer while the other is scanned out, then swap. Memory is trivial (a 1-bit frame is 32 bytes; the RP2350 has 520 KB of RAM).
+  - **Icons and animations are a V2 goal**: 16×16 single-color pixel art using the 16 brightness levels (e.g. shaded faces for semi-3D dice), such as fire (e.g. a flicker on a crit), a skull and crossbones, or a d20 outline.
+  - **Double buffering is required**: draw into one buffer while the other is scanned out, then swap. Memory is trivial (a 4-bit frame is 128 bytes; the RP2350 has 520 KB of RAM).
   - **Driven by RP2350 PIO + DMA**: DMA streams the frame buffer to PIO like a custom serial bus, and firmware only writes the buffer. Each PIO block holds 32 instructions shared by 4 state machines (3 blocks total); a row-scan loop fits easily.
 - **Batteries: 2× AA-size cells, safe with any AA-size cell a customer might insert.** That covers alkaline, NiMH rechargeable, lithium primary, 1.5 V-regulated USB lithium AAs, and 3.7 V Li-ion 14500s.
   - Note: NiMH rechargeables are ~1.2 V nominal, *lower* than alkaline (1.5 V). The high-voltage case is Li-ion 14500s (~3.7 V nominal, 4.2 V full).
@@ -63,9 +63,11 @@ Rough grouping, not a priority order.
 - [ ] Physical pitch for the target case size
 - [ ] LED choice: color, low-current part, brightness at low drive current
 - [x] ~~Drive method~~ RP2350 PIO + DMA multiplexing (Decided 2026-11-15)
-- [ ] Refresh rate and duty cycle versus power budget
+- [ ] Refresh rate and duty cycle versus power budget, including the extra scan speed that 4-bit grayscale needs
 - [ ] What the UI shows: dice selection, roll animation, results, sum, and anything else (baseline layout and icon goal are Decided; details open)
-- [ ] Grayscale (nice-to-have, not a requirement): a few brightness levels (e.g. low/medium/high) via bit-plane / frame-rate modulation, layered on top of the 1-bit core driver. Four levels = 2 bits/pixel = 64 bytes/frame. Main cost is refresh rate: scan fast enough that dim pixels don't flicker. PIO at up to 150 MHz should handle it easily
+- [x] ~~Grayscale~~ 4-bit, 16 levels (Decided 2026-11-15)
+- [ ] Grayscale drive method: e.g. bit-plane (binary code) modulation, with each of the 4 planes shown for a time weighted by its bit. Main cost is refresh rate: scan fast enough that dim pixels don't flicker. PIO at up to 150 MHz should handle it easily
+- [ ] Brightness curve: LED perceived brightness is non-linear, so the 16 levels may need gamma correction
 
 ### Spinner / input
 
@@ -133,6 +135,7 @@ Add an entry each time something moves from Tentative or Open to Decided.
 | 2026-11-15 | Power on/off via a soft latch on the regulator EN pin (button + GPIO hold, ~1 MΩ pull-down) | Fully off when idle, so off-current is just regulator shutdown; fewer parts than the MOSFET version. Replaces the supervisor-MCU idea |
 | 2026-11-15 | Wake from off is button only; the spinner does not wake the device | Acceptable UX, and required by a fully-off MCU |
 | 2026-11-15 | Display is a 16×16 monochrome LED matrix; 16×8, 32×8 and a Sharp memory LCD rejected | Square device; two lines of text plus room for icons, which a 7-segment can't do |
+| 2026-11-15 | Display uses 4-bit grayscale (16 brightness levels, single LED color); was a nice-to-have | Prototyped semi-3D dice icons in the bitmap tool (`ui/`): shaded faces read much better than 1-bit wireframes |
 | 2026-11-15 | Icons and animations (16×16 pixel art) are a V2 goal | A more graphical interface than V1 |
 | 2026-11-15 | Display uses double buffering | Prevents tearing in animations; costs almost no memory |
 | 2026-11-15 | Display driven by RP2350 PIO + DMA from a frame buffer | Keeps the CPU free; firmware only writes the buffer |

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DigiRoll Bitmap Animator</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .layout { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start; }
+    .stage { display: flex; flex-direction: column; gap: 0.5rem; }
+    .stage .cell { cursor: default; }
+    .status { font-size: 0.8rem; color: var(--muted); }
+    .hint { color: var(--muted); font-size: 0.9rem; margin: 0; }
+
+    .frames { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; min-width: 16rem; }
+    .frame {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .frame.current { border-color: var(--accent); }
+    .frame .grid { --cell: 3px; gap: 0; padding: 0; flex: none; }
+    .frame .grid .cell { cursor: pointer; }
+    .frame .index { font-size: 0.8rem; color: var(--muted); width: 1.5rem; text-align: right; }
+    .frame .name {
+      flex: 1;
+      width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 0.85rem;
+    }
+    .frame .error { flex: 1; font-size: 0.8rem; }
+    .frame button { padding: 0.15rem 0.45rem; font-size: 0.8rem; }
+
+    body.dropping main { outline: 2px dashed var(--accent); outline-offset: -0.5rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>DigiRoll Bitmap Animator</h1>
+  </header>
+  <main>
+    <section class="controls">
+      <label>Add .h files
+        <input id="files" type="file" accept=".h,.c,.txt" multiple>
+      </label>
+      <label>Frame rate (fps)
+        <input id="fps" type="number" min="0.5" max="60" step="0.5" value="4">
+      </label>
+      <button id="play" type="button">Play</button>
+      <button id="prev" type="button" title="Previous frame">◀</button>
+      <button id="next" type="button" title="Next frame">▶</button>
+      <label>Pixel size
+        <input id="cell-size" type="range" min="4" max="32" value="20">
+      </label>
+      <button id="clear" type="button">Clear</button>
+    </section>
+
+    <div class="layout">
+      <div class="stage">
+        <div id="stage" class="grid"></div>
+        <div id="status" class="status"></div>
+      </div>
+      <div>
+        <p id="hint" class="hint">Add files above or drop them on the page. Each batch is added in name order; use ↑ ↓ to reorder, ⧉ to duplicate a frame (hold it longer) and ✕ to remove.</p>
+        <ol id="frames" class="frames"></ol>
+      </div>
+    </div>
+  </main>
+  <script src="format.js"></script>
+  <script src="render.js"></script>
+  <script src="animate.js"></script>
+</body>
+</html>

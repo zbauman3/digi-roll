@@ -19,7 +19,18 @@
       gap: 0.5rem;
       max-width: 100%;
     }
-    .card figcaption { font-size: 0.8rem; color: var(--muted); }
+    .card .grid { align-self: flex-start; }
+    .card .error { width: 12rem; }
+    /* The bitmap sets the card width; the caption truncates (full text on hover). */
+    .card figcaption {
+      width: 0;
+      min-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
     .gallery .cell { cursor: default; }
     body.dropping main { outline: 2px dashed var(--accent); outline-offset: -0.5rem; }
   </style>

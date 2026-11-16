@@ -27,6 +27,7 @@ function card(name, bitmap, error) {
   caption.textContent = bitmap
     ? `${name} · ${bitmap.width}×${bitmap.height} · ${bitmap.depth}-bit`
     : name;
+  caption.title = caption.textContent;
   fig.appendChild(caption);
   return fig;
 }
