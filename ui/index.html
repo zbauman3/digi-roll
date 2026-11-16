@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DigiRoll Bitmap Editor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>DigiRoll Bitmap Editor</h1>
+  </header>
+  <main>
+    <section class="controls">
+      <label>Width
+        <input id="width" type="number" min="1" max="64" value="16">
+      </label>
+      <label>Height
+        <input id="height" type="number" min="1" max="64" value="16">
+      </label>
+      <label>Bit depth
+        <select id="depth">
+          <option value="1" selected>1-bit (on/off)</option>
+          <option value="2">2-bit (4 levels)</option>
+          <option value="3">3-bit (8 levels)</option>
+          <option value="4">4-bit (16 levels)</option>
+        </select>
+      </label>
+      <button id="clear" type="button">Clear</button>
+      <button id="open-download" type="button">Download</button>
+      <button id="open-upload" type="button">Upload</button>
+    </section>
+
+    <section class="palette" id="palette" aria-label="Brush"></section>
+
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <dialog id="download-dialog">
+    <form method="dialog">
+      <h2>Download</h2>
+      <label>Name (C identifier)
+        <input id="export-name" type="text" value="bitmap" spellcheck="false">
+      </label>
+      <label>Layout (grayscale only)
+        <select id="export-layout">
+          <option value="packed" selected>Packed: DEPTH bits per pixel</option>
+          <option value="planar">Planar: one 1-bit plane per bit</option>
+        </select>
+      </label>
+      <textarea id="export-code" rows="20" readonly spellcheck="false"></textarea>
+      <div class="actions">
+        <button id="copy" type="button">Copy</button>
+        <button id="save" type="button">Download .h</button>
+        <button value="close">Close</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="upload-dialog">
+    <form method="dialog">
+      <h2>Upload</h2>
+      <label>Choose a .h file
+        <input id="import-file" type="file" accept=".h,.c,.txt">
+      </label>
+      <label>…or paste the C code
+        <textarea id="import-code" rows="20" spellcheck="false"></textarea>
+      </label>
+      <p id="import-error" class="error" role="alert"></p>
+      <div class="actions">
+        <button id="load" type="button">Load</button>
+        <button value="close">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+  <script src="format.js"></script>
+  <script src="render.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

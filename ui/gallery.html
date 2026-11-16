@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DigiRoll Bitmap Gallery</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .hint { color: var(--muted); font-size: 0.9rem; margin: 0 0 1rem; }
+    .gallery { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; }
+    .card {
+      margin: 0;
+      padding: 0.75rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-width: 100%;
+    }
+    .card figcaption { font-size: 0.8rem; color: var(--muted); }
+    .gallery .cell { cursor: default; }
+    body.dropping main { outline: 2px dashed var(--accent); outline-offset: -0.5rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>DigiRoll Bitmap Gallery</h1>
+  </header>
+  <main>
+    <section class="controls">
+      <label>Open .h files
+        <input id="files" type="file" accept=".h,.c,.txt" multiple>
+      </label>
+      <label>Pixel size
+        <input id="cell-size" type="range" min="4" max="24" value="10">
+      </label>
+    </section>
+    <p id="hint" class="hint">Choose files above, or drop them anywhere on the page.</p>
+    <div id="gallery" class="gallery"></div>
+  </main>
+  <script src="format.js"></script>
+  <script src="render.js"></script>
+  <script src="gallery.js"></script>
+</body>
+</html>
